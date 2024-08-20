@@ -12,12 +12,12 @@ source code that implements the topics covered by the book. See below for a list
 learning projects that do include source code.
 
 In recent years, thanks to LLVM, new programming language design has become a fertile space. New Language implementations
-tend to focus on the language front-end, leveraging LLVM as the backend for code optimization and code generation. 
+tend to focus on the language front-end, leveraging LLVM as the back-end for code optimization and code generation. 
 While this is beneficial if you only care about the language design aspects, it is unhelpful for the industry 
-as a whole, because the backend of an optimizing compiler is a very interesting component, with a rich history of 
+as a whole, because the back-end of an optimizing compiler is a very interesting component, with a rich history of 
 algorithms and data structures, and is a subject worthy of study on its own.
 
-We will cover both frontend and backend techniques. We will implement a small scale language as a way
+We will cover both front-end and back-end techniques. We will implement a small scale language as a way
 to learn various techniques, see what the common challenges are and how to address them.
 Language design not being our goal, we will keep the language as simple as possible so that it allows us to
 focus on important implementation issues.
@@ -33,7 +33,11 @@ We will eventually look at gradual typing and dynamic typing.
 Preliminaries
 =============
 
-* Implementation language
+.. toctree::
+   :maxdepth: 2
+   :caption: Preliminaries
+
+   prelim-impl-lang
 
 Basic Front-End techniques
 ==========================
@@ -43,7 +47,6 @@ Basic Front-End techniques
 * Abstract Syntax Trees
 * Type Systems
 * Semantic Analysis
-
 
 Basic Back-end techniques
 =========================
@@ -55,6 +58,7 @@ Basic Back-end techniques
 Basic Optimization techniques
 =============================
 
+* Dominators and Control Flow Graph
 * Data Flow Analysis, Type Lattices, Abstract Interpretation
 * Peephole Optimizations
 * Static Single Assignment
