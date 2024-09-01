@@ -1,13 +1,192 @@
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+
+<html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Compiler Programming</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  </head>
-  <body>
-    <h1>Under Construction!</h1>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Welcome to Compiler Programming! &#8212; Compiler Programming</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/agogo.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Implementation Language" href="prelim-impl-lang.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="#">Compiler Programming</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="prelim-impl-lang.html" title="Implementation Language"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="welcome-to-compiler-programming">
+<h1>Welcome to Compiler Programming!<a class="headerlink" href="#welcome-to-compiler-programming" title="Permalink to this headline">¶</a></h1>
+<p>This site aims to bring together practical knowledge regarding the design and implementation of optimizing compilers
+and interpreters for Programming Languages.</p>
+<p>There are a number of books on Compilers and Interpreters however only a very few of them are accompanied by
+source code that implements the topics covered by the book. See below for a list of useful
+learning projects that do include source code.</p>
+<p>In recent years, thanks to LLVM, new programming language design has become a fertile space. New Language implementations
+tend to focus on the language front-end, leveraging LLVM as the back-end for code optimization and code generation.
+While this is beneficial if you only care about the language design aspects, it is unhelpful for the industry
+as a whole, because the back-end of an optimizing compiler is a very interesting component, with a rich history of
+algorithms and data structures, and is a subject worthy of study on its own.</p>
+<p>We will cover both front-end and back-end techniques. We will implement a small scale language as a way
+to learn various techniques, see what the common challenges are and how to address them.
+Language design not being our goal, we will keep the language as simple as possible so that it allows us to
+focus on important implementation issues.</p>
+<p>Initially we will start with a procedural language. Later we will add features such as closures from functional languages
+and classes and objects from OOP languages. We will also look at advanced front end techniques such as type inference and
+generics.</p>
+<p>The language will be statically typed to start with because this allows us to investigate the traditional compiler
+optimization pipeline. Dyamically typed languages have their own interesting engineering problems.
+We will eventually look at gradual typing and dynamic typing.</p>
+<section id="preliminaries">
+<h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="prelim-impl-lang.html">Implementation Language</a></li>
+</ul>
+</div>
+</section>
+<section id="basic-front-end-techniques">
+<h2>Basic Front-End techniques<a class="headerlink" href="#basic-front-end-techniques" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Lexical analysis</p></li>
+<li><p>Parsing</p></li>
+<li><p>Abstract Syntax Trees</p></li>
+<li><p>Type Systems</p></li>
+<li><p>Semantic Analysis</p></li>
+</ul>
+</section>
+<section id="basic-back-end-techniques">
+<h2>Basic Back-end techniques<a class="headerlink" href="#basic-back-end-techniques" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Stack based vs register based Intermediate Representation</p></li>
+<li><p>Control flow graphs and Basic Blocks</p></li>
+<li><p>Bytecode VM with simple garbage collection</p></li>
+</ul>
+</section>
+<section id="basic-optimization-techniques">
+<h2>Basic Optimization techniques<a class="headerlink" href="#basic-optimization-techniques" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Dominators and Control Flow Graph</p></li>
+<li><p>Data Flow Analysis, Type Lattices, Abstract Interpretation</p></li>
+<li><p>Peephole Optimizations</p></li>
+<li><p>Static Single Assignment</p></li>
+<li><p>Sea of Nodes Representation</p></li>
+<li><p>Code generation and Register Allocation</p></li>
+</ul>
+</section>
+<section id="language-tools">
+<h2>Language Tools<a class="headerlink" href="#language-tools" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Debuggers</p></li>
+<li><p>Language IDEs</p></li>
+</ul>
+</section>
+<section id="advanced-front-end-techniques">
+<h2>Advanced Front-end techniques<a class="headerlink" href="#advanced-front-end-techniques" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Type inference</p></li>
+<li><p>Classes and objects</p></li>
+<li><p>Closures</p></li>
+<li><p>Exception handling</p></li>
+<li><p>Gradual typing</p></li>
+<li><p>Generics</p></li>
+</ul>
+</section>
+<section id="some-useful-projects">
+<h2>Some Useful Projects<a class="headerlink" href="#some-useful-projects" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="book-reviews">
+<h2>Book Reviews<a class="headerlink" href="#book-reviews" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Reviews</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiler-books.html">Compiler Books</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="prelim-impl-lang.html">Implementation Language</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reviews</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiler-books.html">Compiler Books</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="prelim-impl-lang.html" title="Implementation Language"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/index.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, Dibyendu Majumdar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
   </body>
 </html>

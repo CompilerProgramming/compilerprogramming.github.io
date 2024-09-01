@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Implementation Language &#8212; Compiler Programming</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/agogo.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compiler Books" href="compiler-books.html" />
+    <link rel="prev" title="Welcome to Compiler Programming!" href="index.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">Compiler Programming</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="index.html" title="Welcome to Compiler Programming!"
+             accesskey="P">previous</a> |
+          <a href="compiler-books.html" title="Compiler Books"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="implementation-language">
+<h1>Implementation Language<a class="headerlink" href="#implementation-language" title="Permalink to this headline">¶</a></h1>
+<p>A compiler can be implemented in any language we choose. For a pedagogical project it is more convenient
+to choose a language that is widely used, has garbage collection, and comes with excellent tools such
+as IDEs and Debuggers.</p>
+<p>Production quality compilers are often written in C, C++ or Rust. For us these languages are too difficult
+to work with.</p>
+<p>Lisp and Python appear to be popular languages in teaching projects. Lisp is not as widely used
+as we would like our implementation language to be, and dynamically typed languages such as Python are
+harder to work with as the project grows.</p>
+<p>Compared to C, C++ and Rust, the programming language D appears to be much more suitable for this project,
+from a technical standpoint, that is. It is a garbage collection language that has less friction and is pleasant to
+work with. The main negatives are that it is not a popular language, and the tooling is not up to
+the standards of other languages.</p>
+<p>Go would be a good candidate except that its an opinionated language that forces a certain programming model,
+whereas we would like a language that offers least resistance.</p>
+<p>Java, Kotlin, Swift and C# seem like good candidates. Java has some limitations that make it harder to write memory optimized
+code that is often necessary in a production compiler, but we don’t care so much about that.</p>
+<p>I decided to use Java because it is the language I am most familar with, has great tooling, and despite some
+short comings, is widely understood by developers around the world. My first choice would have been D if it was
+purely a question of technical preference.</p>
+<p>The use of Java biases the implementation towards using some Object Orientation; this is just a consequence of the
+most comfortable way of expressing some designs in Java.</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implementation Language</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reviews</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiler-books.html">Compiler Books</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="index.html" title="Welcome to Compiler Programming!"
+              >previous</a> |
+            <a href="compiler-books.html" title="Compiler Books"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/prelim-impl-lang.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, Dibyendu Majumdar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
