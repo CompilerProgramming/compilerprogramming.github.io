@@ -5,8 +5,6 @@ Welcome to Compiler Programming!
 This site aims to bring together practical knowledge regarding the design and implementation of optimizing compilers
 and interpreters for Programming Languages. 
 
-This site is not about programming language design! Instead, our focus is on compiler implementation techniques.
-
 There are a number of books on Compilers and Interpreters however only a very few of them are accompanied by
 source code that implements the topics covered by the book. See below for a list of useful 
 learning projects that do include source code.

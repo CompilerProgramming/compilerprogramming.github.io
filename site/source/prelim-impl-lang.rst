@@ -20,8 +20,12 @@ the standards of other languages.
 Go would be a good candidate except that its an opinionated language that forces a certain programming model,
 whereas we would like a language that offers least resistance.
 
-Java and C# seem like good candidates. Java has some limitations that make it harder to write memory optimized
-code that is often necessary in a production compiler, but we don't care so much about that. Between the two,
-Java is both more popular and has a wider set of tools available.
+Java, Kotlin, Swift and C# seem like good candidates. Java has some limitations that make it harder to write memory optimized
+code that is often necessary in a production compiler, but we don't care so much about that. 
 
-I see no other sane choice but Java. My first choice would have been D if it was purely a technical question.
+I decided to use Java because it is the language I am most familar with, has great tooling, and despite some
+short comings, is widely understood by developers around the world. My first choice would have been D if it was 
+purely a question of technical preference.
+
+The use of Java biases the implementation towards using some Object Orientation; this is just a consequence of the
+most comfortable way of expressing some designs in Java.
