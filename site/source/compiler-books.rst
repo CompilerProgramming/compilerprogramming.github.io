@@ -38,7 +38,18 @@ This book takes a more hands on approach to describing how to implement both a f
 using a toy language called Tiger as an example. Algorithms are described in pseudo code in more detail. If I had to choose
 between the Dragon book, Engineering a compiler, and this book, I would pick this one.
 
+This book covers functional languages, closures, as well as Object Oriented languages such as Java. Type inference is 
+covered too.
 
+Crafting a Compiler. Fischer, LeBlanc, Cytron. 2010.
+====================================================
+The last couple of chapters are the most interesting -these focus on code generation and program optimization. 
+
+The 2nd edition of the book (with Cytron as co author) has a description of Static Single assignment that is 
+perhaps the most complete in all the books I cover here. The 1st edition describes data flow analysis in more 
+detail.
+
+Apart from the final two chapters, the rest of the book is about parsing and semantic analysis.
 
 Other Book Reviews
 ==================
