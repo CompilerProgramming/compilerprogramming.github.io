@@ -51,6 +51,24 @@ detail.
 
 Apart from the final two chapters, the rest of the book is about parsing and semantic analysis.
 
+Building an Optimizing Compiler. Bob Morgan. 1998.
+==================================================
+I have the kindle edition which is very poor and hard to read. I wish I had a paper copy.
+
+This book is almost completely about the backend of the compiler. 
+
+Advanced Compiler Design & Implementation. Muchnick. 1997.
+==========================================================
+I have the kindle edition, which is again very poor and hard to read.
+
+My impression is that this book describes some algorithms in detail but then leaves out parts of the algorithm,
+hence you have to figure things out that are not described. It has a reputation of containing many errors. 
+
+This book describes the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
+I guess this has influenced many compiler implementations.
+
+Its coverage of SSA is rudimentary - I guess it was written when SSA was still very new.
+
 Other Book Reviews
 ==================
 * `List of compiler books <https://gcc.gnu.org/wiki/ListOfCompilerBooks>`_
