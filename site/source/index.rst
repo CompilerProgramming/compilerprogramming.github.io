@@ -40,11 +40,15 @@ Preliminaries
 Basic Front-End techniques
 ==========================
 
-* Lexical analysis
-* Parsing
-* Abstract Syntax Trees
-* Type Systems
-* Semantic Analysis
+.. toctree::
+   :maxdepth: 2
+   :caption: Basic Front-end Techniques
+
+   lexical-analysis
+   parsing
+   abstract-syntax-tree
+   type-systems
+   semantic-analysis
 
 Basic Back-end techniques
 =========================
