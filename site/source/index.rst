@@ -42,10 +42,10 @@ Basic Front-End techniques
 
 .. toctree::
    :maxdepth: 2
-   :caption: Basic Front-end Techniques
+   :caption: Parsing Techniques
 
    lexical-analysis
-   parsing
+   syntax-analysis
    abstract-syntax-tree
    type-systems
    semantic-analysis
