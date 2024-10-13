@@ -23,10 +23,10 @@ For a different take on 2nd edition see `Review of the second addition of the "D
 
 Engineering a Compiler, 2nd Ed. Cooper & Torczon. 2012.
 =======================================================
-This is a more modern version of the Dragon book, one could say. Its less focused on the lexical analysis / parsing
+This is a more modern version of the Dragon book, one could say. It is less focused on the lexical analysis / parsing
 phases, and covers later phases in more detail. Exposition is similar to the Dragon book, mostly describes
 techniques conceptually, with some high level algorithm descriptions, but like the Dragon book, does not 
-go into detailed descriptions of algorithms in general. 
+go into detailed descriptions of algorithms in general.
 
 Both this and the Dragon books describe ahead of time compilers and cover topics that are suited for procedural languages
 such as C or traditional Pascal or Fortran. Interesting topics such as Object Orientation, Closures, Generics, 
@@ -43,7 +43,7 @@ covered too.
 
 Crafting a Compiler. Fischer, LeBlanc, Cytron. 2010.
 ====================================================
-The last couple of chapters are the most interesting -these focus on code generation and program optimization. 
+The last couple of chapters are the most interesting - these focus on code generation and program optimization. 
 
 The 2nd edition of the book (with Cytron as co author) has a description of Static Single assignment that is 
 perhaps the most complete in all the books I cover here. The 1st edition describes data flow analysis in more 
@@ -61,13 +61,27 @@ Advanced Compiler Design & Implementation. Muchnick. 1997.
 ==========================================================
 I have the kindle edition, which is again very poor and hard to read.
 
-My impression is that this book describes some algorithms in detail but then leaves out parts of the algorithm,
-hence you have to figure things out that are not described. It has a reputation of containing many errors. 
+This book is also mostly about the backend of a compiler.
+
+My impression is that this book describes many algorithms in detail but then leaves out parts of the algorithm,
+hence you have to figure things out that are not described. 
 
 This book describes the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
 I guess this has influenced many compiler implementations.
 
 Its coverage of SSA is rudimentary - I guess it was written when SSA was still very new.
+
+This book has a reputation of containing many errors.
+
+Retargetable C Compiler, A: Design and Implementation. Hanson & Fraser. 1995.
+=============================================================================
+Describes a production C compiler. Detailed dsecription of the actual compiler code.
+
+Weak on theoretical aspects, and limited by features of the compiler being described. 
+
+Program Flow Analysis: Theory and Applications. Editors Muchnick, Jones. 1981.
+==============================================================================
+Collection of essays on program analysis, by various authors.
 
 Other Book Reviews
 ==================
