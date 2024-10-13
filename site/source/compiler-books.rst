@@ -2,7 +2,7 @@
 Compiler Books
 ==============
 
-I have owned a bunch of compiler books that I have purchased over the years.
+I own a bunch of compiler books that I have purchased over the years.
 
 Dragon Books
 ============
@@ -27,6 +27,16 @@ This is a more modern version of the Dragon book, one could say. Its less focuse
 phases, and covers later phases in more detail. Exposition is similar to the Dragon book, mostly describes
 techniques conceptually, with some high level algorithm descriptions, but like the Dragon book, does not 
 go into detailed descriptions of algorithms in general. 
+
+Both this and the Dragon books describe ahead of time compilers and cover topics that are suited for procedural languages
+such as C or traditional Pascal or Fortran. Interesting topics such as Object Orientation, Closures, Generics, 
+or Semantic analysis of languages without forward declarations, etc. are not covered in any detail.
+
+Modern Compiler Implementation in C. Appel. 1998.
+=================================================
+This book takes a more hands on approach to describing how to implement both a front end and back end of a compiler, 
+using a toy language called Tiger as an example. Algorithms are described in pseudo code in more detail. If I had to choose
+between the Dragon book, Engineering a compiler, and this book, I would pick this one.
 
 
 
