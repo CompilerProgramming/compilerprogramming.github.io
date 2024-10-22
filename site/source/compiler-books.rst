@@ -32,11 +32,11 @@ Both this and the Dragon books describe ahead of time compilers and cover topics
 such as C or traditional Pascal or Fortran. Interesting topics such as Object Orientation, Closures, Generics, 
 or Semantic analysis of languages without forward declarations, etc. are not covered in any detail.
 
-Modern Compiler Implementation in C. Appel. 1998.
-=================================================
-This book takes a more hands on approach to describing how to implement both a front end and back end of a compiler, 
-using a toy language called Tiger as an example. Algorithms are described in pseudo code in more detail. If I had to choose
-between the Dragon book, Engineering a compiler, and this book, I would pick this one.
+Modern Compiler Implementation in C. Appel. 1998. (Tiger book)
+==============================================================
+This book takes a hands on tutorial like approach to describing how to implement both the front-end and back-end 
+of a compiler, using a toy language called Tiger as an example. Algorithms are described in pseudo code. 
+If I had to choose between the Dragon book, Engineering a compiler, and this book, I would pick this one.
 
 This book covers functional languages, closures, as well as Object Oriented languages such as Java. Type inference is 
 covered too.
@@ -61,7 +61,7 @@ Advanced Compiler Design & Implementation. Muchnick. 1997.
 ==========================================================
 I have the kindle edition, which is again very poor and hard to read.
 
-This book is also mostly about the backend of a compiler.
+This book is also mostly about the backend of a compiler, focusing on optimization.
 
 My impression is that this book describes many algorithms in detail but then leaves out parts of the algorithm,
 hence you have to figure things out that are not described. 
