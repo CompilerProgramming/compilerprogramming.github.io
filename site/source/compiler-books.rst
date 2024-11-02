@@ -61,19 +61,23 @@ This book is almost completely about the backend of the compiler.
 
 Advanced Compiler Design & Implementation. Muchnick. 1997.
 ==========================================================
-I have the kindle edition, which is again very poor and hard to read.
+I have the kindle edition, which is very poor and hard to read.
 
 This book is also mostly about the backend of a compiler, focusing on optimization.
 
 My impression is that this book describes many algorithms in detail. But when I tried to implement one of the
-simpler algorithms (18.1 Unreachable Code Elimination) I found that the description left out a part (No_Path) of the algorithm. 
+simpler algorithms (18.1 Unreachable Code Elimination) I found that the description left out a 
+part (No_Path) of the algorithm. 
 
 This book describes the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
 I guess this has influenced many compiler implementations.
 
 Its coverage of SSA is rudimentary - I guess it was written when SSA was still very new.
 
-This book has a reputation of containing many errors.
+This book has a reputation of containing many errors, although I assume the latest printings have the errors
+fixed. 
+
+Despite its faults, it is a must have book if you want to learn about compiler construction.
 
 Retargetable C Compiler, A: Design and Implementation. Hanson & Fraser. 1995.
 =============================================================================
@@ -83,7 +87,8 @@ Weak on theoretical aspects, and limited by features of the compiler being descr
 
 Program Flow Analysis: Theory and Applications. Editors Muchnick, Jones. 1981.
 ==============================================================================
-Collection of essays on program analysis, by various authors.
+Collection of essays on program analysis, by various authors. This is pre-SSA, hence a bit
+dated.
 
 Other Book Reviews
 ==================
