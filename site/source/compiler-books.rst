@@ -13,8 +13,9 @@ I have 3 editions of these.
 * Compilers: Principles, Techniques and Tools, 2nd Ed. Aho, Lam, Sethi, Ullman, 2006.
 
 These books are criticised today because of the excessive focus on lexical analysis and parsing techniques.
-While this is true, they do cover various aspects of the compiler such as intermediate representation and
-optimization techniques such as peephole optimzation,  data flow analysis, register allocation etc.
+While this is true, they do cover various other aspects of a compiler backend such as intermediate representation, and
+optimization techniques including peephole optimzation, data flow analysis, register allocation etc.
+I found the description of the lattice in a data flow analysis quite accessible.
 
 The 2nd edition adopts a more mathematical presentation style, whereas the earlier editions present
 algorithms using pseudo code. I think the 1986 edition is the best.
@@ -23,14 +24,15 @@ For a different take on 2nd edition see `Review of the second addition of the "D
 
 Engineering a Compiler, 2nd Ed. Cooper & Torczon. 2012.
 =======================================================
-This is a more modern version of the Dragon book, one could say. It is less focused on the lexical analysis / parsing
-phases, and covers later phases in more detail. Exposition is similar to the Dragon book, mostly describes
+This is a more modern version of the Dragon book. It is less focused on the lexical analysis / parsing
+phases, and covers the later phases of a compiler in more detail. Exposition is similar to the Dragon book, i.e. mostly describes
 techniques conceptually, with some high level algorithm descriptions, but like the Dragon book, does not 
-go into detailed descriptions of algorithms in general.
+go into detailed descriptions of algorithms.
 
 Both this and the Dragon books describe ahead of time compilers and cover topics that are suited for procedural languages
-such as C or traditional Pascal or Fortran. Interesting topics such as Object Orientation, Closures, Generics, 
-or Semantic analysis of languages without forward declarations, etc. are not covered in any detail.
+such as C or traditional Pascal or Fortran. They cover both front-end and back-end techniques; however, on the front-end
+side, interesting topics such as Object Orientation, Closures, Generics, 
+or Semantic analysis of more complex languages such as Java are not covered.
 
 Modern Compiler Implementation in C. Appel. 1998. (Tiger book)
 ==============================================================
@@ -63,8 +65,8 @@ I have the kindle edition, which is again very poor and hard to read.
 
 This book is also mostly about the backend of a compiler, focusing on optimization.
 
-My impression is that this book describes many algorithms in detail but then leaves out parts of the algorithm,
-hence you have to figure things out that are not described. 
+My impression is that this book describes many algorithms in detail. But when I tried to implement one of the
+simpler algorithms (18.1 Unreachable Code Elimination) I found that the description left out a part (No_Path) of the algorithm. 
 
 This book describes the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
 I guess this has influenced many compiler implementations.
