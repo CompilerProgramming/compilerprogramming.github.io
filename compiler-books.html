@@ -15,14 +15,14 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to Compiler Programming!" href="index.html" /> 
+    <link rel="prev" title="Semantic Analysis" href="semantic-analysis.html" /> 
   </head><body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Compiler Programming</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
-          <a href="index.html" title="Welcome to Compiler Programming!"
+          <a href="semantic-analysis.html" title="Semantic Analysis"
              accesskey="P">previous</a> |
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a>
@@ -41,6 +41,84 @@
   <section id="compiler-books">
 <h1>Compiler Books<a class="headerlink" href="#compiler-books" title="Permalink to this headline">¶</a></h1>
 <p>I own a bunch of compiler books that I have purchased over the years.</p>
+<section id="dragon-books">
+<h2>Dragon Books<a class="headerlink" href="#dragon-books" title="Permalink to this headline">¶</a></h2>
+<p>I have 3 editions of these.</p>
+<ul class="simple">
+<li><p>Principles of Compiler Design. Aho &amp; Ullman, 1977.</p></li>
+<li><p>Compilers: Principles, Techniques and Tools. Aho, Sethi, Ullman, 1986.</p></li>
+<li><p>Compilers: Principles, Techniques and Tools, 2nd Ed. Aho, Lam, Sethi, Ullman, 2006.</p></li>
+</ul>
+<p>These books are criticised today because of the excessive focus on lexical analysis and parsing techniques.
+While this is true, they do cover various aspects of a compiler backend such as intermediate representations and
+optimization techniques including peephole optimization, data flow analysis, register allocation etc.
+I found the description of the lattice in a data flow analysis quite accessible.</p>
+<p>The 2nd edition adopts a more mathematical presentation style, whereas the earlier editions present
+algorithms using pseudo code. I think the 1986 edition is the best.</p>
+<p>For a different take on 2nd edition see <a class="reference external" href="https://gcc.gnu.org/wiki/Review_of_the_second_addition_of_the_Dragon_Book.">Review of the second addition of the “Dragon Book”</a>.</p>
+</section>
+<section id="engineering-a-compiler-2nd-ed-cooper-torczon-2012">
+<h2>Engineering a Compiler, 2nd Ed. Cooper &amp; Torczon. 2012.<a class="headerlink" href="#engineering-a-compiler-2nd-ed-cooper-torczon-2012" title="Permalink to this headline">¶</a></h2>
+<p>This is a more modern version of the Dragon book. It is less focused on the lexical analysis / parsing
+phases, and covers the later phases of a compiler in more detail. Exposition is similar to the Dragon book, i.e. mostly describes
+techniques conceptually, with some high level algorithm descriptions, but like the Dragon book, does not
+go into detailed descriptions of algorithms.</p>
+<p>Both this and the Dragon books describe ahead of time compilers and cover topics that are suited for procedural languages
+such as C or traditional Pascal or Fortran. They cover both front-end and back-end techniques; however, on the front-end
+side, interesting topics such as Object Orientation, Closures, Generics,
+or Semantic analysis of more complex languages such as Java are not covered.</p>
+</section>
+<section id="modern-compiler-implementation-in-c-appel-1998-tiger-book">
+<h2>Modern Compiler Implementation in C. Appel. 1998. (Tiger book)<a class="headerlink" href="#modern-compiler-implementation-in-c-appel-1998-tiger-book" title="Permalink to this headline">¶</a></h2>
+<p>This book takes a hands on tutorial like approach to describing how to implement both the front-end and back-end
+of a compiler, using a toy language called Tiger as an example. Algorithms are described in pseudo code.
+If I had to choose between the Dragon book, Engineering a compiler, and this book, I would pick this one.</p>
+<p>This book covers functional languages, closures, as well as Object Oriented languages such as Java. Type inference is
+covered too.</p>
+</section>
+<section id="crafting-a-compiler-fischer-leblanc-cytron-2010">
+<h2>Crafting a Compiler. Fischer, LeBlanc, Cytron. 2010.<a class="headerlink" href="#crafting-a-compiler-fischer-leblanc-cytron-2010" title="Permalink to this headline">¶</a></h2>
+<p>The last couple of chapters are the most interesting - these focus on code generation and program optimization.</p>
+<p>The 2nd edition of the book (with Cytron as co author) has a description of Static Single assignment that is
+perhaps the most complete in all the books I cover here. The 1st edition describes data flow analysis in more
+detail.</p>
+<p>Apart from the final two chapters, the rest of the book is about parsing and semantic analysis.</p>
+</section>
+<section id="building-an-optimizing-compiler-bob-morgan-1998">
+<h2>Building an Optimizing Compiler. Bob Morgan. 1998.<a class="headerlink" href="#building-an-optimizing-compiler-bob-morgan-1998" title="Permalink to this headline">¶</a></h2>
+<p>I have the kindle edition which is very poor and hard to read. I wish I had a paper copy.</p>
+<p>This book is almost completely about the backend of the compiler.</p>
+</section>
+<section id="advanced-compiler-design-implementation-muchnick-1997">
+<h2>Advanced Compiler Design &amp; Implementation. Muchnick. 1997.<a class="headerlink" href="#advanced-compiler-design-implementation-muchnick-1997" title="Permalink to this headline">¶</a></h2>
+<p>I have the kindle edition, which is very poor and hard to read.</p>
+<p>This book is also mostly about the backend of a compiler, focusing on optimization.</p>
+<p>My impression is that this book describes many algorithms in detail. But when I tried to implement one of the
+simpler algorithms (18.1 Unreachable Code Elimination) I found that the description left out a
+part (No_Path) of the algorithm.</p>
+<p>This book describes the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
+I guess this has influenced many compiler implementations.</p>
+<p>Its coverage of SSA is rudimentary - I guess it was written when SSA was still very new.</p>
+<p>This book has a reputation of containing many errors, although I assume the latest printings have the errors
+fixed.</p>
+<p>Despite its faults, it is a must have book if you want to learn about compiler construction.</p>
+</section>
+<section id="retargetable-c-compiler-a-design-and-implementation-hanson-fraser-1995">
+<h2>Retargetable C Compiler, A: Design and Implementation. Hanson &amp; Fraser. 1995.<a class="headerlink" href="#retargetable-c-compiler-a-design-and-implementation-hanson-fraser-1995" title="Permalink to this headline">¶</a></h2>
+<p>Describes a production C compiler. Detailed dsecription of the actual compiler code.</p>
+<p>Weak on theoretical aspects, and limited by features of the compiler being described.</p>
+</section>
+<section id="program-flow-analysis-theory-and-applications-editors-muchnick-jones-1981">
+<h2>Program Flow Analysis: Theory and Applications. Editors Muchnick, Jones. 1981.<a class="headerlink" href="#program-flow-analysis-theory-and-applications-editors-muchnick-jones-1981" title="Permalink to this headline">¶</a></h2>
+<p>Collection of essays on program analysis, by various authors. This is pre-SSA, hence a bit
+dated.</p>
+</section>
+<section id="other-book-reviews">
+<h2>Other Book Reviews<a class="headerlink" href="#other-book-reviews" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gcc.gnu.org/wiki/ListOfCompilerBooks">List of compiler books</a></p></li>
+</ul>
+</section>
 </section>
 
 
@@ -52,9 +130,32 @@
         <div class="sidebar">
           
           <h3>Table of Contents</h3>
-          <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+          <p class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="prelim-impl-lang.html">Implementation Language</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Parsing Techniques</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lexical-analysis.html">Lexical Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syntax-analysis.html">Syntax Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstract-syntax-tree.html">Abstract Syntax Tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="type-systems.html">Type Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantic-analysis.html">Semantic Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reviews</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Compiler Books</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compiler Books</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dragon-books">Dragon Books</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#engineering-a-compiler-2nd-ed-cooper-torczon-2012">Engineering a Compiler, 2nd Ed. Cooper &amp; Torczon. 2012.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modern-compiler-implementation-in-c-appel-1998-tiger-book">Modern Compiler Implementation in C. Appel. 1998. (Tiger book)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#crafting-a-compiler-fischer-leblanc-cytron-2010">Crafting a Compiler. Fischer, LeBlanc, Cytron. 2010.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-an-optimizing-compiler-bob-morgan-1998">Building an Optimizing Compiler. Bob Morgan. 1998.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-compiler-design-implementation-muchnick-1997">Advanced Compiler Design &amp; Implementation. Muchnick. 1997.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#retargetable-c-compiler-a-design-and-implementation-hanson-fraser-1995">Retargetable C Compiler, A: Design and Implementation. Hanson &amp; Fraser. 1995.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#program-flow-analysis-theory-and-applications-editors-muchnick-jones-1981">Program Flow Analysis: Theory and Applications. Editors Muchnick, Jones. 1981.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-book-reviews">Other Book Reviews</a></li>
+</ul>
+</li>
 </ul>
 
           <div role="search">
@@ -74,7 +175,7 @@
       <div class="footer">
         <div class="left">
           <div role="navigation" aria-label="related navigaton">
-            <a href="index.html" title="Welcome to Compiler Programming!"
+            <a href="semantic-analysis.html" title="Semantic Analysis"
               >previous</a> |
             <a href="genindex.html" title="General Index"
               >index</a>
