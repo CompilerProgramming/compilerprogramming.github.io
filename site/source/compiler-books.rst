@@ -13,8 +13,8 @@ I have 3 editions of these.
 * Compilers: Principles, Techniques and Tools, 2nd Ed. Aho, Lam, Sethi, Ullman, 2006.
 
 These books are criticised today because of the excessive focus on lexical analysis and parsing techniques.
-While this is true, they do cover various other aspects of a compiler backend such as intermediate representation, and
-optimization techniques including peephole optimzation, data flow analysis, register allocation etc.
+While this is true, they do cover various aspects of a compiler backend such as intermediate representations and
+optimization techniques including peephole optimization, data flow analysis, register allocation etc.
 I found the description of the lattice in a data flow analysis quite accessible.
 
 The 2nd edition adopts a more mathematical presentation style, whereas the earlier editions present
