@@ -28,11 +28,19 @@ The language will be statically typed to start with because this allows us to in
 optimization pipeline. Dyamically typed languages have their own interesting engineering problems.
 We will eventually look at gradual typing and dynamic typing.
 
+Implementation and Discussions
+==============================
+
+* The `EeZee programming language implementation <https://github.com/CompilerProgramming/ez-lang>`_ will serve as the playground for exploring various compilation
+  techniques.
+* This site is `maintained in github <https://github.com/CompilerProgramming/compilerprogramming.github.io/tree/dev>`_ too, and is generated using Sphinx.
+* We have a `Discussion Forum <https://github.com/orgs/CompilerProgramming/discussions>`_.
+
 Preliminaries
 =============
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Preliminaries
 
    prelim-impl-lang
@@ -41,7 +49,7 @@ Basic Front-End techniques
 ==========================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Parsing Techniques
 
    lexical-analysis
@@ -61,9 +69,9 @@ Basic Optimization techniques
 =============================
 
 * Dominators and Control Flow Graph
+* Static Single Assignment
 * Data Flow Analysis, Type Lattices, Abstract Interpretation
 * Peephole Optimizations
-* Static Single Assignment
 * Sea of Nodes Representation
 * Code generation and Register Allocation
 
@@ -84,9 +92,14 @@ Advanced Front-end techniques
 * Generics
 
 
-Some Useful Projects
-====================
+Some Useful Learning Resources
+==============================
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Learning Resources
+
+   learning-resources
 
 Book Reviews
 ============
@@ -97,4 +110,7 @@ Book Reviews
 
    compiler-books
 
+Compiler Jobs
+=============
 
+* A listing of `compiler, language and runtime teams <https://github.com/mgaudet/CompilerJobs>`_ for people looking for compiler jobs.
