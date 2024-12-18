@@ -2,17 +2,19 @@
 Intermediate Representations
 ============================
 
-In general terms, an input program in the source language may go through many intermediate representations within
-the compiler before it is in a form ready for execution. 
+An input program in the source language may go through many intermediate representations within
+a compiler before it is in a form ready for execution. 
   
 One of the first such intermediate representations that we have seen is the
-the Abstract Syntax Tree, which is mainly concerned with the grammar of the source language. 
+the Abstract Syntax Tree (AST), which is mainly concerned with the grammer of the source language. 
 
 From the AST, we generate a different kind of intermediate representation, one that is more amenable 
-to manipulations required during optimization and execution. 
-  
-In the EeZee Programming Language, we implement a stack-based intermediate representation, as well as two 
-variations of a register-based representation.
+to the manipulations required during optimization and execution. There are many such representations; we will 
+limit ourselves to the following.
+
+* Stack based IR
+* Register based IR
+* Sea of Nodes IR
 
 Stack-Based IR
 ==============
@@ -42,3 +44,28 @@ runtime. Above for example we have the following instructions:
 
 So at the end of the program we are left with the sum of ``n+1`` on the stack, and this forms the return 
 value of the function.
+
+Advantages
+----------
+* The IR is compact to represent in stored form, hence many languages choose to encode their compiled code in
+  this form. Examples are Java, C#, Web Assembly.
+* The IR can be executed easily by an Interpreter.
+
+Disadvantages
+-------------
+* Not easy to implement optimizations
+* Harder to analyze the IR, although there are methods available to do so.
+
+Examples
+--------
+* Example implementation on EeZee Programming Language
+* Java Specifications
+* Approaches for Analysis
+
+Register Based IR
+=================
+
+
+
+
+
