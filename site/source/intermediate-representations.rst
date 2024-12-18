@@ -6,7 +6,7 @@ An input program in the source language may go through many intermediate represe
 a compiler before it is in a form ready for execution. 
   
 One of the first such intermediate representations that we have seen is the
-the Abstract Syntax Tree (AST), which is mainly concerned with the grammer of the source language. 
+the Abstract Syntax Tree (AST), which is mainly concerned with the grammar of the source language. 
 
 From the AST, we generate a different kind of intermediate representation, one that is more amenable 
 to the manipulations required during optimization and execution. There are many such representations; we will 
