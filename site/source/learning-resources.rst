@@ -5,6 +5,10 @@ Learning Resources
 Courses
 =======
 
+COMP 512: Advanced Compiler Construction - Rice University, K. Cooper
+---------------------------------------------------------------------
+* `COMP 512 Lectures <https://www.clear.rice.edu/comp512/Lectures/>_`. Nice bibliography of important papers related to optimization.
+
 CS 6120: Advanced Compilers: The Self-Guided Online Course
 ----------------------------------------------------------
 
