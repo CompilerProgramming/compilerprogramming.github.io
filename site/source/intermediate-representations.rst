@@ -45,11 +45,54 @@ runtime. Above for example we have the following instructions:
 So at the end of the program we are left with the sum of ``n+1`` on the stack, and this forms the return 
 value of the function.
 
+In this IR, control flow can be represented either using labels and branching instructions, or by grouping 
+instructions into basic blocks, and linking basic blocks through jump instructions. These two approaches are
+are quite similar, you can think of a label as indicating the start of a basic block, and a jump as ending
+a basic block.
+
+The idea is that inside a basic block, instructions are supposed to execute linearly one after the other.
+Each basic block ends with a branching instruction, something like a goto or a conditional jump.
+
+Here is a simple example of input source code and the IR you might see::
+
+   func foo()->Int
+   {
+      return 1 == 1 && 2 == 2
+   }
+
+This results in IR that may look like this::
+
+   L0:
+	   pushi 1
+	   pushi 1
+	   eq
+	   cbr L2 L3
+   L2:
+	   pushi 2
+	   pushi 2
+	   eq
+	   jump L4
+   L3:
+	   pushi 0
+	   jump L4
+   L4:
+	   jump L1
+   L1:
+
+Each basic block begins with a label, which is just the unique name of the block.
+
+* The ``jump`` instruction transfers control from a basic block to another.
+* The ``cbr`` instruction is the conditional branch. It consumes the top most value from the stack, 
+  and if this value is true, then control is transferred to the first block, else to the second block.
+* The ``eq`` instruction compares two values on top of the stack, and replaces them with integer value
+  ``1`` or ``0``.
+
 Advantages
 ----------
 * The IR is compact to represent in stored form, hence many languages choose to encode their compiled code in
   this form. Examples are Java, C#, Web Assembly.
 * The IR can be executed easily by an Interpreter.
+* Relatively easy to generate from an AST.
 
 Disadvantages
 -------------
@@ -92,11 +135,29 @@ will assign  each virtual register a unique location in its stack frame. So we s
 stack frame, but the IR references locations within the stack frame via these virtual names, rather than implicitly
 through push and pop instructions.
 
+Control flow is represented the same way as for the stack IR. Revisting the same example from above, we get following 
+IR::
+
+   L0:
+      %t0 = 1==1
+      if %t0 goto L2 else goto L3
+   L2:
+      %t0 = 2==2
+      goto  L4
+   L3:
+      %t0 = 0
+      goto  L4
+   L4:
+      ret %t0
+      goto  L1
+   L1:
+
+
 Advantages
 ----------
 * Readability: the flow of values is easier to trace, whereas with a stack IR you need to maintain a stack somewhere
 * The IR can be executed easily by an Interpreter.
-* Most optimization algorithms can be applied with this form of IR.
+* Most optimization algorithms can be applied to this form of IR.
 
 Disadvantages
 -------------
@@ -109,3 +170,5 @@ Examples
 * LLVM instruction set
 * Android Dalvik IR
 
+Sea of Nodes IR
+===============
