@@ -126,7 +126,7 @@ dated.
 
 SSA-Based Compiler Design - various authors
 ===========================================
-An online version of this book is available `here <https://pfalcon.github.io/ssabook/latest/book-full.pdf>`.
+An online version of this book is available `here <https://pfalcon.github.io/ssabook/latest/book-full.pdf>`_.
 This book is a collection of articles on various topics related to SSA. As such it presents more
 recent knowledge regarding SSA construction, optimizations based on SSA, and finally destruction and 
 register allocation.
