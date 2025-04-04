@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Intermediate Representations &#8212; Compiler Programming</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/agogo.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Learning Resources" href="learning-resources.html" />
+    <link rel="prev" title="Semantic Analysis" href="semantic-analysis.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">Compiler Programming</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="semantic-analysis.html" title="Semantic Analysis"
+             accesskey="P">previous</a> |
+          <a href="learning-resources.html" title="Learning Resources"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="intermediate-representations">
+<h1>Intermediate Representations<a class="headerlink" href="#intermediate-representations" title="Permalink to this headline">¶</a></h1>
+<p>An input program in the source language may go through many intermediate representations within
+a compiler before it is in a form ready for execution.</p>
+<p>One of the first such intermediate representations that we have seen is the
+the Abstract Syntax Tree (AST), which is mainly concerned with the grammar of the source language.</p>
+<p>From the AST, we generate a different kind of intermediate representation, one that is more amenable
+to the manipulations required during optimization and execution. There are many such representations; we will
+limit ourselves to the following.</p>
+<ul class="simple">
+<li><p>Stack based IR</p></li>
+<li><p>Register based IR</p></li>
+<li><p>Sea of Nodes IR</p></li>
+</ul>
+<section id="stack-based-ir">
+<h2>Stack-Based IR<a class="headerlink" href="#stack-based-ir" title="Permalink to this headline">¶</a></h2>
+<p>The stack based IR encodes stack operations as part of the intermediate representation. Lets look at a simple
+example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">foo</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Int</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Produces:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">L0</span><span class="p">:</span>
+        <span class="n">load</span> <span class="mi">0</span>
+        <span class="n">pushi</span> <span class="mi">1</span>
+        <span class="n">addi</span>
+        <span class="n">jump</span> <span class="n">L1</span>
+<span class="n">L1</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>The stack based IR is so called because many of the intructions in the IR push and pop values to/from an evaluation stack at
+runtime. Above for example, we have the following instructions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">load</span> <span class="pre">0</span></code> - this pushes the value of the input parameter <code class="docutils literal notranslate"><span class="pre">n</span></code> to the stack. The <code class="docutils literal notranslate"><span class="pre">0</span></code> here identifies the location of the variable <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pushi</span> <span class="pre">1</span></code> - pushes the constant <code class="docutils literal notranslate"><span class="pre">1</span></code> to the stack.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addi</span></code> - pops the two topmost values on the stack, and computes the sum and pushes this to the stack</p></li>
+</ul>
+<p>So at the end of the program we are left with the sum of <code class="docutils literal notranslate"><span class="pre">n+1</span></code> on the stack, and this forms the return
+value of the function.</p>
+<p>In this IR, control flow can be represented either using labels and branching instructions, or by grouping
+instructions into basic blocks, and linking basic blocks through jump instructions. These two approaches are
+equivalent, you can think of a label as indicating the start of a basic block, and a jump as ending
+a basic block.</p>
+<p>The idea is that inside a basic block, instructions executed linearly one after the other.
+Each basic block ends with a branching instruction, something like a goto or a conditional jump.</p>
+<p>Here is a simple example of input source code and the IR you might see:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">foo</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Int</span>
+<span class="p">{</span>
+   <span class="k">return</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This results in IR that may look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">L0</span><span class="p">:</span>
+        <span class="n">pushi</span> <span class="mi">1</span>
+        <span class="n">pushi</span> <span class="mi">1</span>
+        <span class="n">eq</span>
+        <span class="n">cbr</span> <span class="n">L2</span> <span class="n">L3</span>
+<span class="n">L2</span><span class="p">:</span>
+        <span class="n">pushi</span> <span class="mi">2</span>
+        <span class="n">pushi</span> <span class="mi">2</span>
+        <span class="n">eq</span>
+        <span class="n">jump</span> <span class="n">L4</span>
+<span class="n">L3</span><span class="p">:</span>
+        <span class="n">pushi</span> <span class="mi">0</span>
+        <span class="n">jump</span> <span class="n">L4</span>
+<span class="n">L4</span><span class="p">:</span>
+        <span class="n">jump</span> <span class="n">L1</span>
+<span class="n">L1</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Each basic block begins with a label, which is just the unique name of the block.</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">jump</span></code> instruction transfers control from a basic block to another.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">cbr</span></code> instruction is the conditional branch. It consumes the top most value from the stack,
+and if this value is true, then control is transferred to the first block, else to the second block.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">eq</span></code> instruction pops the topmost two values from the stack, and replaces them with integer value
+<code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+<section id="advantages">
+<h3>Advantages<a class="headerlink" href="#advantages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>The IR is compact to represent in stored form as most instructions do not take have operands.
+This is a reason why many languages choose to encode their compiled code in
+this form. Examples are Java, C#, Web Assembly.</p></li>
+<li><p>The IR can be executed easily by an Interpreter.</p></li>
+<li><p>Relatively easy to generate IR from an AST.</p></li>
+</ul>
+</section>
+<section id="disadvantages">
+<h3>Disadvantages<a class="headerlink" href="#disadvantages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Not easy to implement optimizations.</p></li>
+<li><p>Harder to analyze the IR, although there are methods available to do so.</p></li>
+</ul>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/CompilerProgramming/ez-lang/tree/main/stackvm">Example implementation in EeZee Programming Language</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.oracle.com/javase/specs/jvms/se24/html/jvms-6.html">Java Specifications</a>.</p></li>
+<li><p><a class="reference external" href="https://webassembly.github.io/spec/core/syntax/instructions.html">Web Assembly Specifications</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="register-based-ir-or-three-address-ir">
+<h2>Register Based IR or Three-Address IR<a class="headerlink" href="#register-based-ir-or-three-address-ir" title="Permalink to this headline">¶</a></h2>
+<p>This intermediate representation uses named slots called virtual registers in the instruction when referencing
+values. Lets look at the same example we saw above:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">foo</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Int</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Produces:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">L0</span><span class="p">:</span>
+   <span class="o">%</span><span class="n">t1</span> <span class="o">=</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span>
+   <span class="n">ret</span> <span class="o">%</span><span class="n">t1</span>
+   <span class="n">goto</span>  <span class="n">L1</span>
+<span class="n">L1</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>The instructions above are as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">%t1</span> <span class="pre">=</span> <span class="pre">n+1</span></code> - is a typical three-address instruction of the form <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">value1</span> <span class="pre">operator</span> <span class="pre">value2</span></code>. The name <code class="docutils literal notranslate"><span class="pre">%t1</span></code>
+refers to a temporary, whereas <code class="docutils literal notranslate"><span class="pre">n</span></code> refers to the input argument <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ret</span> <span class="pre">%t1</span></code> - is the return instruction, in this instance it references the temporary.</p></li>
+</ul>
+<p>The virtual registers in the IR are so called because they do not map to real registers in the target physical machine.
+Instead these are just named slots in the abstract machine responsible for executing the IR. Typically, the abstract machine
+will assign each virtual register a unique location in its stack frame. So we still end up using the function’s
+stack frame, but the IR references locations within the stack frame via these virtual names, rather than implicitly
+through push and pop instructions. During optimization some of the virtual registers will end up in real hardware registers.</p>
+<p>Control flow is represented the same way as for the stack IR. Revisiting the same source example from above, we get following
+IR:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">L0</span><span class="p">:</span>
+   <span class="o">%</span><span class="n">t0</span> <span class="o">=</span> <span class="mi">1</span><span class="o">==</span><span class="mi">1</span>
+   <span class="k">if</span> <span class="o">%</span><span class="n">t0</span> <span class="n">goto</span> <span class="n">L2</span> <span class="k">else</span> <span class="n">goto</span> <span class="n">L3</span>
+<span class="n">L2</span><span class="p">:</span>
+   <span class="o">%</span><span class="n">t0</span> <span class="o">=</span> <span class="mi">2</span><span class="o">==</span><span class="mi">2</span>
+   <span class="n">goto</span>  <span class="n">L4</span>
+<span class="n">L3</span><span class="p">:</span>
+   <span class="o">%</span><span class="n">t0</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="n">goto</span>  <span class="n">L4</span>
+<span class="n">L4</span><span class="p">:</span>
+   <span class="n">ret</span> <span class="o">%</span><span class="n">t0</span>
+   <span class="n">goto</span>  <span class="n">L1</span>
+<span class="n">L1</span><span class="p">:</span>
+</pre></div>
+</div>
+<section id="id1">
+<h3>Advantages<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Readability: the flow of values is easier to trace, whereas with a stack IR you need to conceptualize a stack somewhere,
+and track values being pushed and popped.</p></li>
+<li><p>The IR can be executed easily by an Interpreter.</p></li>
+<li><p>Most optimization algorithms can be applied to this form of IR.</p></li>
+<li><p>The IR can represent Static Single Assignment (SSA) in a natural way.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Disadvantages<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Each instruction has operands, hence representing the IR in serialized form takes more space.</p></li>
+<li><p>Harder to generate the IR during compilation.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/CompilerProgramming/ez-lang/tree/main/registervm">Example basic register IR in EeZee Programming Language</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/CompilerProgramming/ez-lang/tree/main/optvm">Example register IR including SSA form and optimizations in EeZee Programming Language</a>.</p></li>
+<li><p><a class="reference external" href="https://llvm.org/docs/LangRef.html#instruction-reference">LLVM instruction set</a>.</p></li>
+<li><p><a class="reference external" href="https://source.android.com/docs/core/runtime/dex-format">Android Dalvik IR</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="sea-of-nodes-ir">
+<h2>Sea of Nodes IR<a class="headerlink" href="#sea-of-nodes-ir" title="Permalink to this headline">¶</a></h2>
+<p>The final example we will look at is known as the Sea of Nodes IR.</p>
+<p>It is quite different from the IRs we described above.</p>
+<p>The key features of this IR are:</p>
+<ul class="simple">
+<li><p>Instructions are NOT organized into Basic Blocks - instead, intructions form a graph, where
+each instruction has as its inputs the definitions it uses.</p></li>
+<li><p>Instructions that produce data values are not directly bound to a Basic Block, instead they “float” around,
+the order being defined purely in terms of the dependencies between the instructions.</p></li>
+<li><p>Control flow is also represented in the same way, and control flows between control flow
+instructions. Dependencies between data instructions and control intructions occur at few well
+defined places.</p></li>
+<li><p>The IR as described above cannot be readily executed, because to execute the IR, the instructions
+must be scheduled; you can think of this as a process that puts the instructions into a traditional
+Basic Block IR as described earlier.</p></li>
+</ul>
+<p>Describing Sea of Nodes IR is quite involved. For now, I direct you to the <a class="reference external" href="https://github.com/SeaOfNodes/Simple/tree/main">Simple project</a>; this
+is an ongoing effort to explain the Sea of Nodes IR representation and how to implement it.</p>
+<p>Beyond how the IR is represented, the main benefits of the Sea of Nodes IR are that:</p>
+<ul class="simple">
+<li><p>It is an SSA IR</p></li>
+<li><p>Various optimizations such as peephole optimizations, value numbering and common subexpressions elimination,
+dead code elimitation, occur as the IR is built.</p></li>
+<li><p>This makes the SoN IR suitable for quick optimizations, suitable for Just-In-Time (JIT) compilers.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="prelim-impl-lang.html">Implementation Language</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Parsing Techniques</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lexical-analysis.html">Lexical Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syntax-analysis.html">Syntax Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstract-syntax-tree.html">Abstract Syntax Tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="type-systems.html">Type Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantic-analysis.html">Semantic Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Backend Basics</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Intermediate Representations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Learning Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="learning-resources.html">Learning Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reviews</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiler-books.html">Compiler Books</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="semantic-analysis.html" title="Semantic Analysis"
+              >previous</a> |
+            <a href="learning-resources.html" title="Learning Resources"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/intermediate-representations.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, Dibyendu Majumdar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

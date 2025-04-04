@@ -55,63 +55,96 @@ optimization techniques including peephole optimization, data flow analysis, reg
 I found the description of the lattice in a data flow analysis quite accessible.</p>
 <p>The 2nd edition adopts a more mathematical presentation style, whereas the earlier editions present
 algorithms using pseudo code. I think the 1986 edition is the best.</p>
+<p>The dragon books are a bit dated in that newer techniques such as Static Single Assignment or Graph
+Coloring Register Allocation etc. are not covered in any detail. I would even say that these books are not
+useful if your goal is to work with SSA IR.</p>
 <p>For a different take on 2nd edition see <a class="reference external" href="https://gcc.gnu.org/wiki/Review_of_the_second_addition_of_the_Dragon_Book.">Review of the second addition of the “Dragon Book”</a>.</p>
 </section>
 <section id="engineering-a-compiler-2nd-ed-cooper-torczon-2012">
 <h2>Engineering a Compiler, 2nd Ed. Cooper &amp; Torczon. 2012.<a class="headerlink" href="#engineering-a-compiler-2nd-ed-cooper-torczon-2012" title="Permalink to this headline">¶</a></h2>
 <p>This is a more modern version of the Dragon book. It is less focused on the lexical analysis / parsing
-phases, and covers the later phases of a compiler in more detail. Exposition is similar to the Dragon book, i.e. mostly describes
-techniques conceptually, with some high level algorithm descriptions, but like the Dragon book, does not
-go into detailed descriptions of algorithms.</p>
+phases, and covers the later phases of a compiler in more detail. Exposition is similar to the Dragon book, i.e. describes
+techniques conceptually, and some algorithms are described in more detail using a form of pseudo code.</p>
+<p>Defines an intermediate language called ILOC, but this IR does not have support for function calls.</p>
+<p>In practice, I found this book helpful when implementing the Dominator algorithm and SSA transformation. However, it left out
+important parts in its coverage of SSA which meant that the algorithms as described do not work. For instance:</p>
+<ul class="simple">
+<li><p>The SSA construction algorithm inserts Phis in blocks where the original variable is dead (semi-pruned SSA). This then
+causes the renaming phase to fail as there is no available definition of the variable.</p></li>
+<li><p>Liveness analysis does not cover SSA form and does not handle phis correctly.</p></li>
+<li><p>Exiting out of SSA is described conceptually but the algorithms are not described in detail.</p></li>
+</ul>
+<p>In practice though it is easy to recommend Engineering a Compiler over the Dragon books.</p>
 <p>Both this and the Dragon books describe ahead of time compilers and cover topics that are suited for procedural languages
 such as C or traditional Pascal or Fortran. They cover both front-end and back-end techniques; however, on the front-end
-side, interesting topics such as Object Orientation, Closures, Generics,
-or Semantic analysis of more complex languages such as Java are not covered.</p>
+side, interesting topics such as Object Orientation, Closures, Generics, Semantic analysis of more complex languages
+such as Java are not covered.</p>
 </section>
 <section id="modern-compiler-implementation-in-c-appel-1998-tiger-book">
 <h2>Modern Compiler Implementation in C. Appel. 1998. (Tiger book)<a class="headerlink" href="#modern-compiler-implementation-in-c-appel-1998-tiger-book" title="Permalink to this headline">¶</a></h2>
 <p>This book takes a hands on tutorial like approach to describing how to implement both the front-end and back-end
 of a compiler, using a toy language called Tiger as an example. Algorithms are described in pseudo code.
-If I had to choose between the Dragon book, Engineering a compiler, and this book, I would pick this one.</p>
+If I had to choose from the Dragon book, Engineering a compiler, and this book, I would pick this one and
+Engineering a Compiler.</p>
+<p>It covers a lot of techniques, and usually presents algorithms in pseudo code form. I consulted this book
+when implementing SSA and SCCP, but the descriptions were not sufficiently comprehensive so that I had to
+consult other material too.</p>
 <p>This book covers functional languages, closures, as well as Object Oriented languages such as Java. Type inference is
 covered too.</p>
 </section>
 <section id="crafting-a-compiler-fischer-leblanc-cytron-2010">
 <h2>Crafting a Compiler. Fischer, LeBlanc, Cytron. 2010.<a class="headerlink" href="#crafting-a-compiler-fischer-leblanc-cytron-2010" title="Permalink to this headline">¶</a></h2>
 <p>The last couple of chapters are the most interesting - these focus on code generation and program optimization.</p>
-<p>The 2nd edition of the book (with Cytron as co author) has a description of Static Single assignment that is
-perhaps the most complete in all the books I cover here. The 1st edition describes data flow analysis in more
-detail.</p>
+<p>The 2nd edition of the book (with Cytron as co author) has a description of Static Single assignment. However the
+description is based on a statement level IR, rather than one that uses Basic Blocks. Also, the algorithm for exiting
+SSA is not described.</p>
+<p>The 1st edition describes data flow analysis in more detail, but does not cover SSA.</p>
 <p>Apart from the final two chapters, the rest of the book is about parsing and semantic analysis.</p>
 </section>
 <section id="building-an-optimizing-compiler-bob-morgan-1998">
 <h2>Building an Optimizing Compiler. Bob Morgan. 1998.<a class="headerlink" href="#building-an-optimizing-compiler-bob-morgan-1998" title="Permalink to this headline">¶</a></h2>
 <p>I have the kindle edition which is very poor and hard to read. I wish I had a paper copy.</p>
-<p>This book is almost completely about the backend of the compiler.</p>
+<p>This book is almost completely about the backend of the compiler. I consulted the description of SCCP and
+based my implementation at least in part on the descriptions. In particular I found some discussion about how to
+exploit local knowledge in conditional branches to handle null checks, which was useful, and not discussed in
+other books.</p>
 </section>
 <section id="advanced-compiler-design-implementation-muchnick-1997">
 <h2>Advanced Compiler Design &amp; Implementation. Muchnick. 1997.<a class="headerlink" href="#advanced-compiler-design-implementation-muchnick-1997" title="Permalink to this headline">¶</a></h2>
-<p>I have the kindle edition, which is very poor and hard to read.</p>
-<p>This book is also mostly about the backend of a compiler, focusing on optimization.</p>
+<p>I have the kindle edition, which is very poor quality and hard to read.</p>
+<p>This book is mostly about the backend of a compiler, focusing on optimization.</p>
 <p>My impression is that this book describes many algorithms in detail. But when I tried to implement one of the
 simpler algorithms (18.1 Unreachable Code Elimination) I found that the description left out a
 part (No_Path) of the algorithm.</p>
-<p>This book describes the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
+<p>Introduces the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
 I guess this has influenced many compiler implementations.</p>
-<p>Its coverage of SSA is rudimentary - I guess it was written when SSA was still very new.</p>
+<p>Its coverage of SSA is rudimentary - I guess it was written when SSA was still very new. Hence if you are
+working with SSA IR then you will need to consult other material.</p>
+<p>The Graph Coloring register allocation algorithm is presented in detail and is based on the paper by
+Preston Briggs.</p>
 <p>This book has a reputation of containing many errors, although I assume the latest printings have the errors
 fixed.</p>
 <p>Despite its faults, it is a must have book if you want to learn about compiler construction.</p>
 </section>
 <section id="retargetable-c-compiler-a-design-and-implementation-hanson-fraser-1995">
 <h2>Retargetable C Compiler, A: Design and Implementation. Hanson &amp; Fraser. 1995.<a class="headerlink" href="#retargetable-c-compiler-a-design-and-implementation-hanson-fraser-1995" title="Permalink to this headline">¶</a></h2>
-<p>Describes a production C compiler. Detailed dsecription of the actual compiler code.</p>
-<p>Weak on theoretical aspects, and limited by features of the compiler being described.</p>
+<p>Describes a production C compiler. Contains detailed walkthrough of the actual compiler code.</p>
+<p>Weak on theoretical aspects, and limited by features of the compiler being described. The compiler
+implementation is a single pass code generator, hence its optimizing capabilities are limited.
+There is no coverage of data flow analysis or SSA as these weren’t used by the implementation.</p>
+<p>In short this describes an old school C compiler that generates code fast, but lacks optimizations.</p>
 </section>
 <section id="program-flow-analysis-theory-and-applications-editors-muchnick-jones-1981">
 <h2>Program Flow Analysis: Theory and Applications. Editors Muchnick, Jones. 1981.<a class="headerlink" href="#program-flow-analysis-theory-and-applications-editors-muchnick-jones-1981" title="Permalink to this headline">¶</a></h2>
 <p>Collection of essays on program analysis, by various authors. This is pre-SSA, hence a bit
 dated.</p>
+</section>
+<section id="ssa-based-compiler-design-various-authors">
+<h2>SSA-Based Compiler Design - various authors<a class="headerlink" href="#ssa-based-compiler-design-various-authors" title="Permalink to this headline">¶</a></h2>
+<p>An online version of this book is available <a class="reference external" href="https://pfalcon.github.io/ssabook/latest/book-full.pdf">here</a>.
+This book is a collection of articles on various topics related to SSA. As such it presents more
+recent knowledge regarding SSA construction, optimizations based on SSA, and finally destruction and
+register allocation. I will have more to say about this book as I use it.</p>
 </section>
 <section id="other-book-reviews">
 <h2>Other Book Reviews<a class="headerlink" href="#other-book-reviews" title="Permalink to this headline">¶</a></h2>
@@ -157,6 +190,7 @@ dated.</p>
 <li class="toctree-l2"><a class="reference internal" href="#advanced-compiler-design-implementation-muchnick-1997">Advanced Compiler Design &amp; Implementation. Muchnick. 1997.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#retargetable-c-compiler-a-design-and-implementation-hanson-fraser-1995">Retargetable C Compiler, A: Design and Implementation. Hanson &amp; Fraser. 1995.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#program-flow-analysis-theory-and-applications-editors-muchnick-jones-1981">Program Flow Analysis: Theory and Applications. Editors Muchnick, Jones. 1981.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ssa-based-compiler-design-various-authors">SSA-Based Compiler Design - various authors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#other-book-reviews">Other Book Reviews</a></li>
 </ul>
 </li>
