@@ -61,9 +61,11 @@ Basic Front-End techniques
 Basic Back-end techniques
 =========================
 
-* Stack based vs register based Intermediate Representation
-* Control flow graphs and Basic Blocks
-* Bytecode VM with simple garbage collection
+.. toctree::
+   :maxdepth: 1
+   :caption: Backend Basics
+
+   intermediate-representations
 
 Basic Optimization techniques
 =============================

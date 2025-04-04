@@ -190,8 +190,8 @@ The key features of this IR are:
   instructions. Dependencies between data instructions and control intructions occur at few well
   defined places.
 * The IR as described above cannot be readily executed, because to execute the IR, the instructions
-  must be scheduled, which you can think of a process by which the instructions are put into 
-  a traditional register based IR such as one described earlier.
+  must be scheduled; you can think of this as a process that puts the instructions into a traditional
+  Basic Block IR as described earlier.
 
 Describing Sea of Nodes IR is quite involved. For now, I direct you to the `Simple project <https://github.com/SeaOfNodes/Simple/tree/main>`_; this
 is an ongoing effort to explain the Sea of Nodes IR representation and how to implement it.
