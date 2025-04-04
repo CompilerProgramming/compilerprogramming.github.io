@@ -30,18 +30,17 @@ Engineering a Compiler, 2nd Ed. Cooper & Torczon. 2012.
 =======================================================
 This is a more modern version of the Dragon book. It is less focused on the lexical analysis / parsing
 phases, and covers the later phases of a compiler in more detail. Exposition is similar to the Dragon book, i.e. describes
-techniques conceptually, and some algorithms are described in detail using a form of pseudo code.
+techniques conceptually, and some algorithms are described in more detail using a form of pseudo code.
 
-Defines an intermediate language called ILOC, but this does not have support for function calls.
+Defines an intermediate language called ILOC, but this IR does not have support for function calls.
 
-In practice, I found this book helful when implementing Dominator algorithm and SSA transformation. However, it left out
+In practice, I found this book helpful when implementing the Dominator algorithm and SSA transformation. However, it left out
 important parts in its coverage of SSA which meant that the algorithms as described do not work. For instance:
 
 * The SSA construction algorithm inserts Phis in blocks where the original variable is dead (semi-pruned SSA). This then
   causes the renaming phase to fail as there is no available definition of the variable.
 * Liveness analysis does not cover SSA form and does not handle phis correctly.
-* Exiting out of SSA is described conceptually but the algorithms are not
-  described in detail. 
+* Exiting out of SSA is described conceptually but the algorithms are not described in detail. 
 
 In practice though it is easy to recommend Engineering a Compiler over the Dragon books.
 
@@ -95,7 +94,7 @@ My impression is that this book describes many algorithms in detail. But when I 
 simpler algorithms (18.1 Unreachable Code Elimination) I found that the description left out a 
 part (No_Path) of the algorithm.
 
-This book describes the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
+Introduces the idea of multiple levels of intermediate representation, HIR, MIR and LIR.
 I guess this has influenced many compiler implementations.
 
 Its coverage of SSA is rudimentary - I guess it was written when SSA was still very new. Hence if you are
@@ -111,7 +110,7 @@ Despite its faults, it is a must have book if you want to learn about compiler c
 
 Retargetable C Compiler, A: Design and Implementation. Hanson & Fraser. 1995.
 =============================================================================
-Describes a production C compiler. Detailed dsecription of the actual compiler code.
+Describes a production C compiler. Contains detailed walkthrough of the actual compiler code.
 
 Weak on theoretical aspects, and limited by features of the compiler being described. The compiler
 implementation is a single pass code generator, hence its optimizing capabilities are limited.
@@ -129,7 +128,7 @@ SSA-Based Compiler Design - various authors
 An online version of this book is available `here <https://pfalcon.github.io/ssabook/latest/book-full.pdf>`_.
 This book is a collection of articles on various topics related to SSA. As such it presents more
 recent knowledge regarding SSA construction, optimizations based on SSA, and finally destruction and 
-register allocation.
+register allocation. I will have more to say about this book as I use it.
 
 Other Book Reviews
 ==================

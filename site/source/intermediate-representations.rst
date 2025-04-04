@@ -35,10 +35,10 @@ Produces::
 	   jump L1
    L1:
 
-The stack based IR is so called because many of the intructions in the IR push values to an evaluation stack at 
-runtime. Above for example we have the following instructions:
+The stack based IR is so called because many of the intructions in the IR push and pop values to/from an evaluation stack at 
+runtime. Above for example, we have the following instructions:
 
-* ``load 0`` - this refers to loading the value of the input parameter ``n`` to the stack.
+* ``load 0`` - this pushes the value of the input parameter ``n`` to the stack. The ``0`` here identifies the location of the variable ``n``.
 * ``pushi 1`` - pushes the constant ``1`` to the stack.
 * ``addi`` - pops the two topmost values on the stack, and computes the sum and pushes this to the stack
 
@@ -47,10 +47,10 @@ value of the function.
 
 In this IR, control flow can be represented either using labels and branching instructions, or by grouping 
 instructions into basic blocks, and linking basic blocks through jump instructions. These two approaches are
-are quite similar, you can think of a label as indicating the start of a basic block, and a jump as ending
+equivalent, you can think of a label as indicating the start of a basic block, and a jump as ending
 a basic block.
 
-The idea is that inside a basic block, instructions are supposed to execute linearly one after the other.
+The idea is that inside a basic block, instructions executed linearly one after the other.
 Each basic block ends with a branching instruction, something like a goto or a conditional jump.
 
 Here is a simple example of input source code and the IR you might see::
@@ -84,31 +84,32 @@ Each basic block begins with a label, which is just the unique name of the block
 * The ``jump`` instruction transfers control from a basic block to another.
 * The ``cbr`` instruction is the conditional branch. It consumes the top most value from the stack, 
   and if this value is true, then control is transferred to the first block, else to the second block.
-* The ``eq`` instruction compares two values on top of the stack, and replaces them with integer value
+* The ``eq`` instruction pops the topmost two values from the stack, and replaces them with integer value
   ``1`` or ``0``.
 
 Advantages
 ----------
-* The IR is compact to represent in stored form, hence many languages choose to encode their compiled code in
+* The IR is compact to represent in stored form as most instructions do not take have operands. 
+  This is a reason why many languages choose to encode their compiled code in
   this form. Examples are Java, C#, Web Assembly.
 * The IR can be executed easily by an Interpreter.
-* Relatively easy to generate from an AST.
+* Relatively easy to generate IR from an AST.
 
 Disadvantages
 -------------
-* Not easy to implement optimizations
+* Not easy to implement optimizations.
 * Harder to analyze the IR, although there are methods available to do so.
 
 Examples
 --------
-* Example implementation in EeZee Programming Language
-* Java Specifications
-* Web Assembly Specifications
+* `Example implementation in EeZee Programming Language <https://github.com/CompilerProgramming/ez-lang/tree/main/stackvm>`_.
+* `Java Specifications <https://docs.oracle.com/javase/specs/jvms/se24/html/jvms-6.html>`_.
+* `Web Assembly Specifications <https://webassembly.github.io/spec/core/syntax/instructions.html>`_.
 
 Register Based IR or Three-Address IR
 =====================================
 
-This intermediate representation uses named slots called virtual registers in the Instruction when referencing
+This intermediate representation uses named slots called virtual registers in the instruction when referencing
 values. Lets look at the same example we saw above::
 
    func foo(n: Int)->Int {
@@ -125,17 +126,17 @@ Produces::
 
 The instructions above are as follows:
 
-* `%t1 = n+1` - is a typical three-address instruction of the form `result = value1 operator value2`. The name `%t1` 
-  refers to a temporary, whereas `n` refers to the input argument `n`.
-* `ret %t1` - is the return instruction, in this instance it references the temporary.
+* ``%t1 = n+1`` - is a typical three-address instruction of the form ``result = value1 operator value2``. The name ``%t1`` 
+  refers to a temporary, whereas ``n`` refers to the input argument ``n``.
+* ``ret %t1`` - is the return instruction, in this instance it references the temporary.
 
 The virtual registers in the IR are so called because they do not map to real registers in the target physical machine.
 Instead these are just named slots in the abstract machine responsible for executing the IR. Typically, the abstract machine
-will assign  each virtual register a unique location in its stack frame. So we still end up using the function's
+will assign each virtual register a unique location in its stack frame. So we still end up using the function's
 stack frame, but the IR references locations within the stack frame via these virtual names, rather than implicitly
-through push and pop instructions.
+through push and pop instructions. During optimization some of the virtual registers will end up in real hardware registers.
 
-Control flow is represented the same way as for the stack IR. Revisting the same example from above, we get following 
+Control flow is represented the same way as for the stack IR. Revisiting the same source example from above, we get following 
 IR::
 
    L0:
@@ -155,20 +156,49 @@ IR::
 
 Advantages
 ----------
-* Readability: the flow of values is easier to trace, whereas with a stack IR you need to maintain a stack somewhere
+* Readability: the flow of values is easier to trace, whereas with a stack IR you need to conceptualize a stack somewhere,
+  and track values being pushed and popped.
 * The IR can be executed easily by an Interpreter.
 * Most optimization algorithms can be applied to this form of IR.
+* The IR can represent Static Single Assignment (SSA) in a natural way.
 
 Disadvantages
 -------------
 * Each instruction has operands, hence representing the IR in serialized form takes more space.
-* Harder to generate the IR during compilation. We will look in detail one way of generating this IR.
+* Harder to generate the IR during compilation.
 
 Examples
 --------
-* Example implementation in EeZee Programming Language
-* LLVM instruction set
-* Android Dalvik IR
+* `Example basic register IR in EeZee Programming Language <https://github.com/CompilerProgramming/ez-lang/tree/main/registervm>`_.
+* `Example register IR including SSA form and optimizations in EeZee Programming Language <https://github.com/CompilerProgramming/ez-lang/tree/main/optvm>`_. 
+* `LLVM instruction set <https://llvm.org/docs/LangRef.html#instruction-reference>`_.
+* `Android Dalvik IR <https://source.android.com/docs/core/runtime/dex-format>`_.
 
 Sea of Nodes IR
 ===============
+The final example we will look at is known as the Sea of Nodes IR.
+
+It is quite different from the IRs we described above.
+
+The key features of this IR are:
+
+* Instructions are NOT organized into Basic Blocks - instead, intructions form a graph, where
+  each instruction has as its inputs the definitions it uses.
+* Instructions that produce data values are not directly bound to a Basic Block, instead they "float" around,
+  the order being defined purely in terms of the dependencies between the instructions.
+* Control flow is also represented in the same way, and control flows between control flow
+  instructions. Dependencies between data instructions and control intructions occur at few well
+  defined places.
+* The IR as described above cannot be readily executed, because to execute the IR, the instructions
+  must be scheduled, which you can think of a process by which the instructions are put into 
+  a traditional register based IR such as one described earlier.
+
+Describing Sea of Nodes IR is quite involved. For now, I direct you to the `Simple project <https://github.com/SeaOfNodes/Simple/tree/main>`_; this
+is an ongoing effort to explain the Sea of Nodes IR representation and how to implement it.
+
+Beyond how the IR is represented, the main benefits of the Sea of Nodes IR are that:
+
+* It is an SSA IR
+* Various optimizations such as peephole optimizations, value numbering and common subexpressions elimination,
+  dead code elimitation, occur as the IR is built.
+* This makes the SoN IR suitable for quick optimizations, suitable for Just-In-Time (JIT) compilers.
