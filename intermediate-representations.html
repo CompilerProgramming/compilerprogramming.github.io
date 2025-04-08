@@ -86,7 +86,7 @@ value of the function.</p>
 instructions into basic blocks, and linking basic blocks through jump instructions. These two approaches are
 equivalent, you can think of a label as indicating the start of a basic block, and a jump as ending
 a basic block.</p>
-<p>The idea is that inside a basic block, instructions executed linearly one after the other.
+<p>The idea is that inside a basic block, instructions execute linearly one after the other.
 Each basic block ends with a branching instruction, something like a goto or a conditional jump.</p>
 <p>Here is a simple example of input source code and the IR you might see:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">foo</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Int</span>
@@ -118,14 +118,15 @@ Each basic block ends with a branching instruction, something like a goto or a c
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">jump</span></code> instruction transfers control from a basic block to another.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">cbr</span></code> instruction is the conditional branch. It consumes the top most value from the stack,
-and if this value is true, then control is transferred to the first block, else to the second block.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">eq</span></code> instruction pops the topmost two values from the stack, and replaces them with integer value
-<code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+and if this value is true (in this case, a non-zero value), then control is transferred
+to the first block, else to the second block.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">eq</span></code> instruction pops the two topmost values from the stack, compares them and pushes a result:
+<code class="docutils literal notranslate"><span class="pre">1</span></code> for true or <code class="docutils literal notranslate"><span class="pre">0</span></code> for false.</p></li>
 </ul>
 <section id="advantages">
 <h3>Advantages<a class="headerlink" href="#advantages" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>The IR is compact to represent in stored form as most instructions do not take have operands.
+<li><p>The IR is compact to represent in stored form as most instructions do not have operands.
 This is a reason why many languages choose to encode their compiled code in
 this form. Examples are Java, C#, Web Assembly.</p></li>
 <li><p>The IR can be executed easily by an Interpreter.</p></li>
@@ -136,6 +137,8 @@ this form. Examples are Java, C#, Web Assembly.</p></li>
 <h3>Disadvantages<a class="headerlink" href="#disadvantages" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Not easy to implement optimizations.</p></li>
+<li><p>For a reader it is hard to trace values as they flow through instructions,
+as it requires tracking them through a conceptual stack.</p></li>
 <li><p>Harder to analyze the IR, although there are methods available to do so.</p></li>
 </ul>
 </section>
@@ -168,13 +171,13 @@ values. Lets look at the same example we saw above:</p>
 <p>The instructions above are as follows:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">%t1</span> <span class="pre">=</span> <span class="pre">n+1</span></code> - is a typical three-address instruction of the form <code class="docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">value1</span> <span class="pre">operator</span> <span class="pre">value2</span></code>. The name <code class="docutils literal notranslate"><span class="pre">%t1</span></code>
-refers to a temporary, whereas <code class="docutils literal notranslate"><span class="pre">n</span></code> refers to the input argument <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></li>
+refers to a temporary, whereas <code class="docutils literal notranslate"><span class="pre">n</span></code> refers to the input argument <code class="docutils literal notranslate"><span class="pre">n</span></code>. Both of these names are virtual registers.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ret</span> <span class="pre">%t1</span></code> - is the return instruction, in this instance it references the temporary.</p></li>
 </ul>
 <p>The virtual registers in the IR are so called because they do not map to real registers in the target physical machine.
 Instead these are just named slots in the abstract machine responsible for executing the IR. Typically, the abstract machine
 will assign each virtual register a unique location in its stack frame. So we still end up using the function’s
-stack frame, but the IR references locations within the stack frame via these virtual names, rather than implicitly
+stack frame, but the IR references locations within the stack frame directly using these virtual names, rather than implicitly
 through push and pop instructions. During optimization some of the virtual registers will end up in real hardware registers.</p>
 <p>Control flow is represented the same way as for the stack IR. Revisiting the same source example from above, we get following
 IR:</p>
@@ -198,6 +201,7 @@ IR:</p>
 <ul class="simple">
 <li><p>Readability: the flow of values is easier to trace, whereas with a stack IR you need to conceptualize a stack somewhere,
 and track values being pushed and popped.</p></li>
+<li><p>Fewer instructions are needed compared to stack IR.</p></li>
 <li><p>The IR can be executed easily by an Interpreter.</p></li>
 <li><p>Most optimization algorithms can be applied to this form of IR.</p></li>
 <li><p>The IR can represent Static Single Assignment (SSA) in a natural way.</p></li>
@@ -223,14 +227,14 @@ and track values being pushed and popped.</p></li>
 <section id="sea-of-nodes-ir">
 <h2>Sea of Nodes IR<a class="headerlink" href="#sea-of-nodes-ir" title="Permalink to this headline">¶</a></h2>
 <p>The final example we will look at is known as the Sea of Nodes IR.</p>
-<p>It is quite different from the IRs we described above.</p>
+<p>This IR is quite different from the IRs we described above.</p>
 <p>The key features of this IR are:</p>
 <ul class="simple">
 <li><p>Instructions are NOT organized into Basic Blocks - instead, intructions form a graph, where
 each instruction has as its inputs the definitions it uses.</p></li>
 <li><p>Instructions that produce data values are not directly bound to a Basic Block, instead they “float” around,
 the order being defined purely in terms of the dependencies between the instructions.</p></li>
-<li><p>Control flow is also represented in the same way, and control flows between control flow
+<li><p>Control flow is represented in a similar way, and control flows between control flow
 instructions. Dependencies between data instructions and control intructions occur at few well
 defined places.</p></li>
 <li><p>The IR as described above cannot be readily executed, because to execute the IR, the instructions

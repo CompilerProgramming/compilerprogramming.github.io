@@ -50,7 +50,7 @@ instructions into basic blocks, and linking basic blocks through jump instructio
 equivalent, you can think of a label as indicating the start of a basic block, and a jump as ending
 a basic block.
 
-The idea is that inside a basic block, instructions executed linearly one after the other.
+The idea is that inside a basic block, instructions execute linearly one after the other.
 Each basic block ends with a branching instruction, something like a goto or a conditional jump.
 
 Here is a simple example of input source code and the IR you might see::
@@ -83,13 +83,14 @@ Each basic block begins with a label, which is just the unique name of the block
 
 * The ``jump`` instruction transfers control from a basic block to another.
 * The ``cbr`` instruction is the conditional branch. It consumes the top most value from the stack, 
-  and if this value is true, then control is transferred to the first block, else to the second block.
-* The ``eq`` instruction pops the topmost two values from the stack, and replaces them with integer value
-  ``1`` or ``0``.
+  and if this value is true (in this case, a non-zero value), then control is transferred 
+  to the first block, else to the second block.
+* The ``eq`` instruction pops the two topmost values from the stack, compares them and pushes a result:
+  ``1`` for true or ``0`` for false.
 
 Advantages
 ----------
-* The IR is compact to represent in stored form as most instructions do not take have operands. 
+* The IR is compact to represent in stored form as most instructions do not have operands. 
   This is a reason why many languages choose to encode their compiled code in
   this form. Examples are Java, C#, Web Assembly.
 * The IR can be executed easily by an Interpreter.
@@ -98,6 +99,8 @@ Advantages
 Disadvantages
 -------------
 * Not easy to implement optimizations.
+* For a reader it is hard to trace values as they flow through instructions, 
+  as it requires tracking them through a conceptual stack.
 * Harder to analyze the IR, although there are methods available to do so.
 
 Examples
@@ -127,13 +130,13 @@ Produces::
 The instructions above are as follows:
 
 * ``%t1 = n+1`` - is a typical three-address instruction of the form ``result = value1 operator value2``. The name ``%t1`` 
-  refers to a temporary, whereas ``n`` refers to the input argument ``n``.
+  refers to a temporary, whereas ``n`` refers to the input argument ``n``. Both of these names are virtual registers.
 * ``ret %t1`` - is the return instruction, in this instance it references the temporary.
 
 The virtual registers in the IR are so called because they do not map to real registers in the target physical machine.
 Instead these are just named slots in the abstract machine responsible for executing the IR. Typically, the abstract machine
 will assign each virtual register a unique location in its stack frame. So we still end up using the function's
-stack frame, but the IR references locations within the stack frame via these virtual names, rather than implicitly
+stack frame, but the IR references locations within the stack frame directly using these virtual names, rather than implicitly
 through push and pop instructions. During optimization some of the virtual registers will end up in real hardware registers.
 
 Control flow is represented the same way as for the stack IR. Revisiting the same source example from above, we get following 
@@ -157,7 +160,8 @@ IR::
 Advantages
 ----------
 * Readability: the flow of values is easier to trace, whereas with a stack IR you need to conceptualize a stack somewhere,
-  and track values being pushed and popped.
+  and track values being pushed and popped. 
+* Fewer instructions are needed compared to stack IR.
 * The IR can be executed easily by an Interpreter.
 * Most optimization algorithms can be applied to this form of IR.
 * The IR can represent Static Single Assignment (SSA) in a natural way.
@@ -178,15 +182,15 @@ Sea of Nodes IR
 ===============
 The final example we will look at is known as the Sea of Nodes IR.
 
-It is quite different from the IRs we described above.
+This IR is quite different from the IRs we described above.
 
 The key features of this IR are:
 
 * Instructions are NOT organized into Basic Blocks - instead, intructions form a graph, where
   each instruction has as its inputs the definitions it uses.
 * Instructions that produce data values are not directly bound to a Basic Block, instead they "float" around,
-  the order being defined purely in terms of the dependencies between the instructions.
-* Control flow is also represented in the same way, and control flows between control flow
+  the order being defined purely in terms of the dependencies between the instructions. 
+* Control flow is represented in a similar way, and control flows between control flow
   instructions. Dependencies between data instructions and control intructions occur at few well
   defined places.
 * The IR as described above cannot be readily executed, because to execute the IR, the instructions
