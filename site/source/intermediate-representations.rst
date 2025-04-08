@@ -204,5 +204,5 @@ Beyond how the IR is represented, the main benefits of the Sea of Nodes IR are t
 
 * It is an SSA IR
 * Various optimizations such as peephole optimizations, value numbering and common subexpressions elimination,
-  dead code elimitation, occur as the IR is built.
-* This makes the SoN IR suitable for quick optimizations, suitable for Just-In-Time (JIT) compilers.
+  dead code elimination, occur as the IR is built.
+* The SoN IR can generate optimized code quickly, suitable for Just-In-Time (JIT) compilers.
