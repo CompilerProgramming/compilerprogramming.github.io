@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>The EeZee Programming Language &#8212; Compiler Programming</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/agogo.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Lexical Analysis" href="lexical-analysis.html" />
+    <link rel="prev" title="Implementation Language" href="prelim-impl-lang.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">Compiler Programming</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="prelim-impl-lang.html" title="Implementation Language"
+             accesskey="P">previous</a> |
+          <a href="lexical-analysis.html" title="Lexical Analysis"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="the-eezee-programming-language">
+<h1>The EeZee Programming Language<a class="headerlink" href="#the-eezee-programming-language" title="Permalink to this headline">¶</a></h1>
+<p>The EeZee programming language is a toy language with just enough features to allow
+experimenting with various compiler techniques.</p>
+<p>The base language is intentionally very small. Eventually there will be extended versions
+that allow functional and  object oriented paradigms.</p>
+<section id="language-features">
+<h2>Language features<a class="headerlink" href="#language-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>User defined functions</p></li>
+<li><p>Integer type</p></li>
+<li><p>User defined <code class="docutils literal notranslate"><span class="pre">struct</span></code> types</p></li>
+<li><p>One dimensional arrays</p></li>
+<li><p>Basic control flow such as <code class="docutils literal notranslate"><span class="pre">if</span></code> and <code class="docutils literal notranslate"><span class="pre">while</span></code> statements</p></li>
+</ul>
+</section>
+<section id="keywords">
+<h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
+<p>Following are keywords in the language:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">var</span> <span class="nb">int</span> <span class="n">struct</span> <span class="k">if</span> <span class="k">else</span> <span class="k">while</span> <span class="k">break</span> <span class="k">continue</span> <span class="k">return</span>
+</pre></div>
+</div>
+</section>
+<section id="source-unit">
+<h2>Source Unit<a class="headerlink" href="#source-unit" title="Permalink to this headline">¶</a></h2>
+<p>The EeZee language does not have the concept of modules or imports. Each source file must be
+self contained.</p>
+<p>There is no predefined <code class="docutils literal notranslate"><span class="pre">main</span></code> function in a source unit. The runtime should allow
+any defined function to be invoked by supplying appropriate arguments.</p>
+</section>
+<section id="types">
+<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<p>The only primitive type in the language is the integer type <code class="docutils literal notranslate"><span class="pre">Int</span></code>.
+The size of this type is unspecified, the default implementation is 64-bit integers.</p>
+<p>There is not a distinct boolean type, non-zero integer values evaluate as true, and <code class="docutils literal notranslate"><span class="pre">0</span></code> evaluates as false.</p>
+<p>Users can define one-dimensional arrays and structs.</p>
+<p>Arrays and structs are implicitly reference types, i.e. instances of these types are
+allocated on the heap.</p>
+<p>The language does not specify whether the heap is garbage collected or manually managed, it is
+up to the implementation.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">struct</span></code> type is a named aggregate with one or more fields. Fields may of be of any supported
+type.</p>
+<p>An array type is declared by enclosing the element type in brackets, i.e. <code class="docutils literal notranslate"><span class="pre">[</span></code> and <code class="docutils literal notranslate"><span class="pre">]</span></code>.</p>
+<p>There is a <code class="docutils literal notranslate"><span class="pre">Null</span></code> type, with a predefined literal named <code class="docutils literal notranslate"><span class="pre">null</span></code> of this type.</p>
+<p>When declaring fields or variables of reference types, user may suffix the type name with <code class="docutils literal notranslate"><span class="pre">?</span></code> to
+indicate a <code class="docutils literal notranslate"><span class="pre">Nullable</span></code> type. A <code class="docutils literal notranslate"><span class="pre">Null</span></code> is an implicit subtype of all <code class="docutils literal notranslate"><span class="pre">Nullable</span></code> types.</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct Tree {
+    var left: Tree?
+    var right: Tree?
+}
+struct Test {
+    var intArray: [Int]
+}
+struct TreeArray {
+    var array: [Tree?]?
+}
+</pre></div>
+</div>
+<p>Struct types are nominal, i.e. each struct type is identified uniquely by its name.
+Multiple definitions of struct types is not allowed.</p>
+<p>The language does not require forward declarations.</p>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<p>Users can declare functions, each function must have a unique name.</p>
+<p>Polymorphic functions are not supported.</p>
+<p>Functions can accept one or more arguments and may optionally return a result.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">func</span></code> keyword instroduces a function declaration.</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Int</span> <span class="p">{</span>
+    <span class="n">var</span> <span class="n">f1</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">var</span> <span class="n">f2</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">var</span> <span class="n">i</span><span class="o">=</span><span class="n">n</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">1</span> <span class="p">){</span>
+        <span class="n">var</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">f1</span><span class="o">+</span><span class="n">f2</span>
+        <span class="n">f1</span><span class="o">=</span><span class="n">f2</span>
+        <span class="n">f2</span><span class="o">=</span><span class="n">temp</span>
+        <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">f2</span>
+<span class="p">}</span>
+
+<span class="n">func</span> <span class="n">foo</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="variables-and-fields">
+<h2>Variables and Fields<a class="headerlink" href="#variables-and-fields" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">var</span></code> keyword is used to introduce a new variable in the current lexical scope,
+or to add a field to a struct.</p>
+<p>There are two forms of this:</p>
+<p>When introducing variables, you can supply an initializer; this removes the need to
+specify a type. Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">var</span> <span class="n">j</span> <span class="o">=</span> <span class="n">foo</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this form the type of the variable is inferred from the initializer’s type.</p>
+<p>The second form is more suited when declaring fields in a struct. In this form
+a type is required - initializer cannot be set.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">T</span>
+<span class="p">{</span>
+    <span class="n">var</span> <span class="n">f</span><span class="p">:</span> <span class="n">Int</span>
+    <span class="n">var</span> <span class="n">arry</span><span class="p">:</span> <span class="p">[</span><span class="n">Int</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-new-instances-of-arrays">
+<h2>Creating new instances of Arrays<a class="headerlink" href="#creating-new-instances-of-arrays" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">new</span></code> keyword is used to create array instances.</p>
+<p>It must be followed by an array type name, and optionally followed by an initializer.</p>
+<p>The array initializer must be a comma separated list of values, enclosed in <code class="docutils literal notranslate"><span class="pre">{</span></code> and <code class="docutils literal notranslate"><span class="pre">}</span></code>.</p>
+<p>The array is sized based on number of values in the initilizer.</p>
+<p>Alternatively the array initializer may have a field named <code class="docutils literal notranslate"><span class="pre">len</span></code> that specifies the size of the
+array, and a field named <code class="docutils literal notranslate"><span class="pre">value</span></code> to specify the value to use.</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">arry</span> <span class="o">=</span> <span class="n">new</span> <span class="p">[</span><span class="n">Int</span><span class="p">]</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">}</span>
+<span class="n">var</span> <span class="n">arry2</span> <span class="o">=</span> <span class="n">new</span> <span class="p">[</span><span class="n">Int</span><span class="p">]</span> <span class="p">{</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The second example creates an array with 10 elements and sets the initial value to 0.</p>
+</section>
+<section id="creating-new-instances-of-structs">
+<h2>Creating new instances of structs<a class="headerlink" href="#creating-new-instances-of-structs" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">new</span></code> keyword is used to create struct instances.</p>
+<p>It must be followed by the struct type name, and optionally followed by an initializer.</p>
+<p>The struct initializer must be a comma separated list of field initializers, enclosed in <code class="docutils literal notranslate"><span class="pre">{</span></code> and <code class="docutils literal notranslate"><span class="pre">}</span></code>.</p>
+<p>A field initializer has the form of name followed by <code class="docutils literal notranslate"><span class="pre">=</span></code> followed by an expression.</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Stats</span> <span class="p">{</span> <span class="n">age</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">100</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="control-flow">
+<h2>Control Flow<a class="headerlink" href="#control-flow" title="Permalink to this headline">¶</a></h2>
+<p>The language is lexically scoped, and block structured.</p>
+<p>A block is enclosed in <code class="docutils literal notranslate"><span class="pre">{</span></code> and <code class="docutils literal notranslate"><span class="pre">}</span></code> and introduces a lexical scope.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">if</span></code> statement allows branching based on a condition. The condition must be an
+integer expression; a value of <code class="docutils literal notranslate"><span class="pre">0</span></code> is false, any other value is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">if</span></code> statement can have an optional <code class="docutils literal notranslate"><span class="pre">else</span></code> branch.</p>
+<p>The only looping construct is the <code class="docutils literal notranslate"><span class="pre">while</span></code> statement; this executes the sub statement
+as long as the supplied condition evaluates to a non zero value.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">break</span></code> statement exits a loop.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">continue</span></code> statement branches to the beginning of the loop.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">return</span></code> statement takes an expression if the function is meant to return a value.
+It causes the currently executing function to terminate.</p>
+</section>
+<section id="expressions">
+<h2>Expressions<a class="headerlink" href="#expressions" title="Permalink to this headline">¶</a></h2>
+<p>Following table describes the available operators by their precedence (low to high):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 44%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operator</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">||</span></code></p></td>
+<td><p>logical or</p></td>
+<td><p>Binary</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code></p></td>
+<td><p>logical and</p></td>
+<td><p>Binary</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">==</span></code>
+<code class="docutils literal notranslate"><span class="pre">!=</span></code>
+<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>
+<code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>
+<code class="docutils literal notranslate"><span class="pre">&gt;=</span></code></p></td>
+<td><p>relational</p></td>
+<td><p>Binary</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code>
+<code class="docutils literal notranslate"><span class="pre">-</span></code></p></td>
+<td><p>addition</p></td>
+<td><p>Binary</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">*</span></code>
+<code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
+<td><p>multiplication</p></td>
+<td><p>Binary</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-</span></code>
+<code class="docutils literal notranslate"><span class="pre">!</span></code></p></td>
+<td><p>negate</p></td>
+<td><p>Unary</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">(...)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">.</span></code> ID</p></td>
+<td><p>function call,
+array index,
+field access</p></td>
+<td><p>Postfix</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="grammar">
+<h2>Grammar<a class="headerlink" href="#grammar" title="Permalink to this headline">¶</a></h2>
+<p>The following grammar describes the language syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>program
+    : declaration+ EOF
+    ;
+
+declaration
+    : structDeclaration
+    | functionDeclaration
+    ;
+
+structDeclaration
+    : &#39;struct&#39; IDENTIFIER &#39;{&#39; fields &#39;}&#39;
+    ;
+
+fields
+    : varDeclaration+
+    ;
+
+varDeclaration
+    : &#39;var&#39; IDENTIFIER &#39;:&#39; typeName &#39;;&#39;?
+    ;
+
+typeName
+    : simpleType
+    | arrayType
+    ;
+
+simpleType
+    : IDENTIFIER (&#39;?&#39;)?
+    ;
+
+arrayType
+    : &#39;[&#39; simpleType &#39;]&#39; (&#39;?&#39;)?
+    ;
+
+functionDeclaration
+    : &#39;func&#39; IDENTIFIER &#39;(&#39; parameters? &#39;)&#39; (&#39;-&gt;&#39; typeName)? block
+    ;
+
+parameters
+    : parameter (&#39;,&#39; parameter)*
+    ;
+
+parameter
+    : IDENTIFIER &#39;:&#39; typeName
+    ;
+
+block
+    : &#39;{&#39; statement* &#39;}&#39;
+    ;
+
+statement
+    : &#39;if&#39; &#39;(&#39; expression &#39;)&#39; statement
+    | &#39;if&#39; &#39;(&#39; expression &#39;)&#39; statement &#39;else&#39; statement
+    | &#39;while&#39; &#39;(&#39; expression &#39;)&#39; statement
+    | postfixExpression &#39;=&#39; expression &#39;;&#39;?
+    | block
+    | &#39;break&#39; &#39;;&#39;?
+    | &#39;continue&#39; &#39;;&#39;?
+    | varDeclaration
+    | &#39;var&#39; IDENTIFIER &#39;=&#39; expression &#39;;&#39;?
+    | &#39;return&#39; orExpression? &#39;;&#39;?
+    | expression &#39;;&#39;?
+    ;
+
+expression
+    : orExpression
+    ;
+
+orExpression
+    : andExpression (&#39;||&#39; andExpression)*
+    ;
+
+andExpression
+    : relationalExpression (&#39;&amp;&amp;&#39; relationalExpression)*
+    ;
+
+relationalExpression
+    : additionExpression ((&#39;==&#39; | &#39;!=&#39;| &#39;&gt;&#39;| &#39;&lt;&#39;| &#39;&gt;=&#39;| &#39;&lt;=&#39;) additionExpression)*
+    ;
+
+additionExpression
+    : multiplicationExpression ((&#39;+&#39; | &#39;-&#39;) multiplicationExpression)*
+    ;
+
+multiplicationExpression
+    : unaryExpression ((&#39;*&#39; | &#39;/&#39; ) unaryExpression)*
+    ;
+
+unaryExpression
+    : (&#39;-&#39; | &#39;!&#39;) unaryExpression
+    | postfixExpression
+    ;
+
+postfixExpression
+    : primaryExpression (indexExpression | callExpression | fieldExpression)*
+    ;
+
+indexExpression
+    : &#39;[&#39; orExpression &#39;]&#39;
+    ;
+
+callExpression
+    : &#39;(&#39; arguments? &#39;)&#39;
+    ;
+
+arguments
+    : orExpression (&#39;,&#39; orExpression)*
+    ;
+
+fieldExpression
+    : &#39;.&#39; IDENTIFIER
+    ;
+
+primaryExpression
+    : INTEGER_LITERAL
+    | IDENTIFIER
+    | &#39;(&#39; orExpression &#39;)&#39;
+    | &#39;new&#39; typeName initExpression
+    ;
+
+initExpression
+    : &#39;{&#39; initializers? &#39;}&#39;
+    ;
+
+initializers
+    : initializer (&#39;,&#39; initializer)*
+    ;
+
+initializer
+    : (IDENTIFIER &#39;=&#39;)? orExpression
+    ;
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="prelim-impl-lang.html">Implementation Language</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The EeZee Programming Language</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Parsing Techniques</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lexical-analysis.html">Lexical Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="syntax-analysis.html">Syntax Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abstract-syntax-tree.html">Abstract Syntax Tree</a></li>
+<li class="toctree-l1"><a class="reference internal" href="type-systems.html">Type Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantic-analysis.html">Semantic Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Backend Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intermediate-representations.html">Intermediate Representations</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Learning Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="learning-resources.html">Learning Resources</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reviews</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compiler-books.html">Compiler Books</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="prelim-impl-lang.html" title="Implementation Language"
+              >previous</a> |
+            <a href="lexical-analysis.html" title="Lexical Analysis"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/ez-lang.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, Dibyendu Majumdar.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

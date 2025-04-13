@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Implementation Language &#8212; Compiler Programming</title>
+    <title>Compiler Implementation Language &#8212; Compiler Programming</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/agogo.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Lexical Analysis" href="lexical-analysis.html" />
+    <link rel="next" title="The EeZee Programming Language" href="ez-lang.html" />
     <link rel="prev" title="Welcome to Compiler Programming!" href="index.html" /> 
   </head><body>
     <div class="header-wrapper" role="banner">
@@ -25,7 +25,7 @@
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="index.html" title="Welcome to Compiler Programming!"
              accesskey="P">previous</a> |
-          <a href="lexical-analysis.html" title="Lexical Analysis"
+          <a href="ez-lang.html" title="The EeZee Programming Language"
              accesskey="N">next</a> |
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a>
@@ -41,8 +41,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="implementation-language">
-<h1>Implementation Language<a class="headerlink" href="#implementation-language" title="Permalink to this headline">¶</a></h1>
+  <section id="compiler-implementation-language">
+<h1>Compiler Implementation Language<a class="headerlink" href="#compiler-implementation-language" title="Permalink to this headline">¶</a></h1>
 <p>A compiler can be implemented in any language we choose. For a pedagogical project it is more convenient
 to choose a language that is widely used, has garbage collection, and comes with excellent tools such
 as IDEs and Debuggers.</p>
@@ -55,9 +55,7 @@ harder to work with as the project grows.</p>
 from a technical standpoint, that is. It is a garbage collection language that has less friction and is pleasant to
 work with. The main negatives are that it is not a popular language, and the tooling is not up to
 the standards of other languages.</p>
-<p>Go would be a good candidate except that its an opinionated language that forces a certain programming model,
-whereas we would like a language that offers least resistance.</p>
-<p>Java, Kotlin, Swift and C# seem like good candidates. Java has some limitations that make it harder to write memory optimized
+<p>Go, Java, Kotlin, Swift and C# seem like good candidates. Java has some limitations that make it harder to write memory optimized
 code that is often necessary in a production compiler, but we don’t care so much about that.</p>
 <p>I decided to use Java because it is the language I am most familar with, has great tooling, and despite some
 short comings, is widely understood by developers around the world. My first choice would have been D if it was
@@ -77,7 +75,8 @@ most comfortable way of expressing some designs in Java.</p>
           <h3>Table of Contents</h3>
           <p class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Implementation Language</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compiler Implementation Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ez-lang.html">The EeZee Programming Language</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Parsing Techniques</span></p>
 <ul>
@@ -119,7 +118,7 @@ most comfortable way of expressing some designs in Java.</p>
           <div role="navigation" aria-label="related navigaton">
             <a href="index.html" title="Welcome to Compiler Programming!"
               >previous</a> |
-            <a href="lexical-analysis.html" title="Lexical Analysis"
+            <a href="ez-lang.html" title="The EeZee Programming Language"
               >next</a> |
             <a href="genindex.html" title="General Index"
               >index</a>
