@@ -44,6 +44,7 @@ Preliminaries
    :caption: Preliminaries
 
    prelim-impl-lang
+   ez-lang
 
 Basic Front-End techniques
 ==========================

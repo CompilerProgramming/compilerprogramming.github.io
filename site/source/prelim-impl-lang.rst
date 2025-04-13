@@ -1,5 +1,5 @@
-Implementation Language
-=======================
+Compiler Implementation Language
+================================
 
 A compiler can be implemented in any language we choose. For a pedagogical project it is more convenient
 to choose a language that is widely used, has garbage collection, and comes with excellent tools such 
@@ -17,10 +17,7 @@ from a technical standpoint, that is. It is a garbage collection language that h
 work with. The main negatives are that it is not a popular language, and the tooling is not up to 
 the standards of other languages.
 
-Go would be a good candidate except that its an opinionated language that forces a certain programming model,
-whereas we would like a language that offers least resistance.
-
-Java, Kotlin, Swift and C# seem like good candidates. Java has some limitations that make it harder to write memory optimized
+Go, Java, Kotlin, Swift and C# seem like good candidates. Java has some limitations that make it harder to write memory optimized
 code that is often necessary in a production compiler, but we don't care so much about that. 
 
 I decided to use Java because it is the language I am most familar with, has great tooling, and despite some
