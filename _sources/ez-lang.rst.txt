@@ -19,7 +19,7 @@ Keywords
 --------
 Following are keywords in the language::
 
-    func var int struct if else while break continue return
+    func var int struct if else while break continue return null
 
 Source Unit
 -----------
@@ -36,7 +36,7 @@ Types
 The only primitive type in the language is the integer type ``Int``.
 The size of this type is unspecified, the default implementation is 64-bit integers.
 
-There is not a distinct boolean type, non-zero integer values evaluate as true, and ``0`` evaluates as false.
+There is not a distinct boolean type, non-zero integer values evaluate as true, and zero evaluates as false.
 
 Users can define one-dimensional arrays and structs.
 
@@ -47,7 +47,8 @@ The language does not specify whether the heap is garbage collected or manually 
 up to the implementation.
 
 A ``struct`` type is a named aggregate with one or more fields. Fields may of be of any supported
-type.
+type. Struct types are nominal, i.e. each struct type is identified uniquely by its name.
+Multiple definitions of a struct type are not allowed.
 
 An array type is declared by enclosing the element type in brackets, i.e. ``[`` and ``]``.
 
@@ -69,9 +70,6 @@ Examples::
         var array: [Tree?]?
     }
 
-Struct types are nominal, i.e. each struct type is identified uniquely by its name.
-Multiple definitions of struct types is not allowed.
-
 The language does not require forward declarations.
 
 Functions
@@ -79,11 +77,11 @@ Functions
 
 Users can declare functions, each function must have a unique name.
 
-Polymorphic functions are not supported.
+Functions cannot be overloaded. Functions are not closures.
 
 Functions can accept one or more arguments and may optionally return a result.
 
-The ``func`` keyword instroduces a function declaration.
+The ``func`` keyword introduces a function declaration.
 
 Examples::
 
@@ -103,6 +101,11 @@ Examples::
     func foo()->Int {
         return fib(10)
     }
+
+Literals
+--------
+
+The only literals are integer values and ``null``.
 
 Variables and Fields
 --------------------
@@ -171,12 +174,12 @@ Examples::
 Control Flow
 ------------
 
-The language is lexically scoped, and block structured.
+The language is block structured.
 
 A block is enclosed in ``{`` and ``}`` and introduces a lexical scope.
 
 The ``if`` statement allows branching based on a condition. The condition must be an
-integer expression; a value of ``0`` is false, any other value is ``true``.
+integer expression; a value of zero is ``false``, any other value is ``true``.
 
 The ``if`` statement can have an optional ``else`` branch.
 
@@ -253,16 +256,17 @@ The following grammar describes the language syntax::
         ;
 
     typeName
-        : simpleType
+        : nominalType
         | arrayType
         ;
 
-    simpleType
-        : IDENTIFIER ('?')?
+    nominalType
+        : 'Int'
+        | IDENTIFIER ('?')?
         ;
 
     arrayType
-        : '[' simpleType ']' ('?')?
+        : '[' nominalType ']' ('?')?
         ;
 
     functionDeclaration

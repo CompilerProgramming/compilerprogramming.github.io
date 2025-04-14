@@ -16,14 +16,14 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Lexical Analysis" href="lexical-analysis.html" />
-    <link rel="prev" title="Implementation Language" href="prelim-impl-lang.html" /> 
+    <link rel="prev" title="Compiler Implementation Language" href="prelim-impl-lang.html" /> 
   </head><body>
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
           href="index.html">Compiler Programming</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
-          <a href="prelim-impl-lang.html" title="Implementation Language"
+          <a href="prelim-impl-lang.html" title="Compiler Implementation Language"
              accesskey="P">previous</a> |
           <a href="lexical-analysis.html" title="Lexical Analysis"
              accesskey="N">next</a> |
@@ -60,7 +60,7 @@ that allow functional and  object oriented paradigms.</p>
 <section id="keywords">
 <h2>Keywords<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h2>
 <p>Following are keywords in the language:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">var</span> <span class="nb">int</span> <span class="n">struct</span> <span class="k">if</span> <span class="k">else</span> <span class="k">while</span> <span class="k">break</span> <span class="k">continue</span> <span class="k">return</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">var</span> <span class="nb">int</span> <span class="n">struct</span> <span class="k">if</span> <span class="k">else</span> <span class="k">while</span> <span class="k">break</span> <span class="k">continue</span> <span class="k">return</span> <span class="n">null</span>
 </pre></div>
 </div>
 </section>
@@ -75,14 +75,15 @@ any defined function to be invoked by supplying appropriate arguments.</p>
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <p>The only primitive type in the language is the integer type <code class="docutils literal notranslate"><span class="pre">Int</span></code>.
 The size of this type is unspecified, the default implementation is 64-bit integers.</p>
-<p>There is not a distinct boolean type, non-zero integer values evaluate as true, and <code class="docutils literal notranslate"><span class="pre">0</span></code> evaluates as false.</p>
+<p>There is not a distinct boolean type, non-zero integer values evaluate as true, and zero evaluates as false.</p>
 <p>Users can define one-dimensional arrays and structs.</p>
 <p>Arrays and structs are implicitly reference types, i.e. instances of these types are
 allocated on the heap.</p>
 <p>The language does not specify whether the heap is garbage collected or manually managed, it is
 up to the implementation.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">struct</span></code> type is a named aggregate with one or more fields. Fields may of be of any supported
-type.</p>
+type. Struct types are nominal, i.e. each struct type is identified uniquely by its name.
+Multiple definitions of a struct type are not allowed.</p>
 <p>An array type is declared by enclosing the element type in brackets, i.e. <code class="docutils literal notranslate"><span class="pre">[</span></code> and <code class="docutils literal notranslate"><span class="pre">]</span></code>.</p>
 <p>There is a <code class="docutils literal notranslate"><span class="pre">Null</span></code> type, with a predefined literal named <code class="docutils literal notranslate"><span class="pre">null</span></code> of this type.</p>
 <p>When declaring fields or variables of reference types, user may suffix the type name with <code class="docutils literal notranslate"><span class="pre">?</span></code> to
@@ -100,16 +101,14 @@ struct TreeArray {
 }
 </pre></div>
 </div>
-<p>Struct types are nominal, i.e. each struct type is identified uniquely by its name.
-Multiple definitions of struct types is not allowed.</p>
 <p>The language does not require forward declarations.</p>
 </section>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
 <p>Users can declare functions, each function must have a unique name.</p>
-<p>Polymorphic functions are not supported.</p>
+<p>Functions cannot be overloaded. Functions are not closures.</p>
 <p>Functions can accept one or more arguments and may optionally return a result.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">func</span></code> keyword instroduces a function declaration.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">func</span></code> keyword introduces a function declaration.</p>
 <p>Examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Int</span> <span class="p">{</span>
     <span class="n">var</span> <span class="n">f1</span><span class="o">=</span><span class="mi">1</span>
@@ -129,6 +128,10 @@ Multiple definitions of struct types is not allowed.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
+</section>
+<section id="literals">
+<h2>Literals<a class="headerlink" href="#literals" title="Permalink to this headline">¶</a></h2>
+<p>The only literals are integer values and <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
 </section>
 <section id="variables-and-fields">
 <h2>Variables and Fields<a class="headerlink" href="#variables-and-fields" title="Permalink to this headline">¶</a></h2>
@@ -181,10 +184,10 @@ array, and a field named <code class="docutils literal notranslate"><span class=
 </section>
 <section id="control-flow">
 <h2>Control Flow<a class="headerlink" href="#control-flow" title="Permalink to this headline">¶</a></h2>
-<p>The language is lexically scoped, and block structured.</p>
+<p>The language is block structured.</p>
 <p>A block is enclosed in <code class="docutils literal notranslate"><span class="pre">{</span></code> and <code class="docutils literal notranslate"><span class="pre">}</span></code> and introduces a lexical scope.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">if</span></code> statement allows branching based on a condition. The condition must be an
-integer expression; a value of <code class="docutils literal notranslate"><span class="pre">0</span></code> is false, any other value is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+integer expression; a value of zero is <code class="docutils literal notranslate"><span class="pre">false</span></code>, any other value is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">if</span></code> statement can have an optional <code class="docutils literal notranslate"><span class="pre">else</span></code> branch.</p>
 <p>The only looping construct is the <code class="docutils literal notranslate"><span class="pre">while</span></code> statement; this executes the sub statement
 as long as the supplied condition evaluates to a non zero value.</p>
@@ -277,16 +280,17 @@ varDeclaration
     ;
 
 typeName
-    : simpleType
+    : nominalType
     | arrayType
     ;
 
-simpleType
-    : IDENTIFIER (&#39;?&#39;)?
+nominalType
+    : &#39;Int&#39;
+    | IDENTIFIER (&#39;?&#39;)?
     ;
 
 arrayType
-    : &#39;[&#39; simpleType &#39;]&#39; (&#39;?&#39;)?
+    : &#39;[&#39; nominalType &#39;]&#39; (&#39;?&#39;)?
     ;
 
 functionDeclaration
@@ -402,7 +406,7 @@ initializer
           <h3>Table of Contents</h3>
           <p class="caption" role="heading"><span class="caption-text">Preliminaries</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="prelim-impl-lang.html">Implementation Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prelim-impl-lang.html">Compiler Implementation Language</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The EeZee Programming Language</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Parsing Techniques</span></p>
@@ -443,7 +447,7 @@ initializer
       <div class="footer">
         <div class="left">
           <div role="navigation" aria-label="related navigaton">
-            <a href="prelim-impl-lang.html" title="Implementation Language"
+            <a href="prelim-impl-lang.html" title="Compiler Implementation Language"
               >previous</a> |
             <a href="lexical-analysis.html" title="Lexical Analysis"
               >next</a> |
